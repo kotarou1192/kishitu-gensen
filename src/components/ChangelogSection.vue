@@ -8,7 +8,6 @@ interface Commit {
   author: string;
   email: string;
   date: string;
-  relativeDate: string;
   url: string;
 }
 
@@ -60,7 +59,7 @@ onMounted(async () => {
             <a :href="commit.url" target="_blank" rel="noopener noreferrer" class="commit-hash">
               {{ commit.shortHash }}
             </a>
-            <span class="commit-date">{{ commit.relativeDate }}</span>
+            <span class="commit-date">{{ commit.date }}</span>
           </div>
           <div class="commit-message">{{ commit.message }}</div>
         </div>

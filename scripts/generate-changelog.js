@@ -9,21 +9,31 @@ const __dirname = dirname(__filename);
 try {
   // 最新5件のコミット情報を取得
   const gitLog = execSync(
-    'git log -5 --pretty=format:"%H|%h|%s|%an|%ae|%ad|%cr" --date=iso',
+    'git log -5 --pretty=format:"%H|%h|%s|%an|%ae|%ad" --date=iso',
     { encoding: "utf-8" },
   );
 
   const commits = gitLog.split("\n").map((line) => {
-    const [hash, shortHash, message, author, email, date, relativeDate] =
-      line.split("|");
+    const [hash, shortHash, message, author, email, isoDate] = line.split("|");
+
+    // ISO形式の日時をJST表記に変換
+    const date = new Date(isoDate);
+    const jstDate = new Intl.DateTimeFormat("ja-JP", {
+      timeZone: "Asia/Tokyo",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(date);
+
     return {
       hash,
       shortHash,
       message,
       author,
       email,
-      date,
-      relativeDate,
+      date: jstDate,
       url: `https://github.com/kotarou1192/kishitu-gensen/commit/${hash}`,
     };
   });
