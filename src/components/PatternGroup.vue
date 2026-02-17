@@ -5,6 +5,7 @@ import { computed } from 'vue';
 
 interface Props {
   group: PatternGroup;
+  patternNumber: number;
   wantedAdditional: string;
   wantedSkill: string;
 }
@@ -23,7 +24,10 @@ const weaponCountText = computed(() => {
 
 <template>
   <div class="pattern-group">
-    <h4 class="mode-title">【{{ group.mode }}】（{{ weaponCountText }}）</h4>
+    <div class="pattern-header">
+      <h4 class="pattern-title">パターン {{ patternNumber }}</h4>
+      <span class="weapon-count">{{ weaponCountText }}</span>
+    </div>
 
     <div class="pattern-details">
       <div class="base-choices">
@@ -63,19 +67,37 @@ const weaponCountText = computed(() => {
 <style scoped>
 .pattern-group {
   margin-bottom: 1.5rem;
-  padding: 1rem;
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-  border-left: 4px solid #646cff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(100, 108, 255, 0.3);
 }
 
-.mode-title {
-  color: #ffd700;
-  margin-bottom: 1rem;
+.pattern-header {
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.3) 0%, rgba(100, 108, 255, 0.15) 100%);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid rgba(100, 108, 255, 0.5);
+}
+
+.pattern-title {
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #646cff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.weapon-count {
+  font-size: 0.9em;
+  color: #aaa;
+  font-weight: 500;
 }
 
 .pattern-details {
-  padding-left: 1rem;
+  padding: 1rem;
 }
 
 .base-choices, .lock-info {
