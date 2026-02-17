@@ -106,6 +106,10 @@ const copyLink = async () => {
           GitHub リポジトリ
         </a>
       </p>
+      
+      <p class="bug-report">
+        バグ報告や機能要望も歓迎します 🐛
+      </p>
     </footer>
   </div>
 </template>
@@ -162,6 +166,11 @@ header {
 
 .repo-link a:hover {
   text-decoration: underline;
+}
+
+.bug-report {
+  color: #888;
+  font-size: 0.85rem;
 }
 
 .share-buttons {
