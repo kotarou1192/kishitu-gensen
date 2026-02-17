@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      # ソースコードをマウントしてホットリロードを有効化
+      - .:/app
+      # node_modules はコンテナ内のものを使用
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev -- --host
+    stdin_open: true
+    tty: true

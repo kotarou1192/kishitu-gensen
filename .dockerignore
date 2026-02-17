@@ -1,0 +1,33 @@
+# 依存関係
+node_modules
+npm-debug.log*
+
+# ビルド成果物
+dist
+dist-ssr
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# 環境設定
+.env
+.env.local
+.env.*.local
+
+# テスト
+coverage
+
+# その他
+*.log
