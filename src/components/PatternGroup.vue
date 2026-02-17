@@ -28,19 +28,19 @@ const weaponCountText = computed(() => {
     <div class="pattern-details">
       <div class="base-choices">
         <div v-if="group.requiredBaseChoices.length > 0" class="required-choices">
-          <strong>基礎（必須選択）:</strong>
+          <strong>基礎効果（必須選択）:</strong>
           <p class="required-list">{{ group.requiredBaseChoices.join(', ') }}</p>
         </div>
       </div>
 
       <div class="lock-info">
         <div v-if="group.mode === '付加固定'">
-          <p><strong>付加（固定）:</strong> {{ group.lockedAdditional }}</p>
-          <p><strong>スキル（ランダム）:</strong> エリアプールから（欲しい: {{ wantedSkill }}）</p>
+          <p><strong>付加効果（固定）:</strong> {{ group.lockedAdditional }}</p>
+          <p><strong>スキル効果（ランダム）:</strong> 希望した効果: {{ wantedSkill }}</p>
         </div>
         <div v-else>
-          <p><strong>スキル（固定）:</strong> {{ group.lockedSkill }}</p>
-          <p><strong>付加（ランダム）:</strong> エリアプールから（欲しい: {{ wantedAdditional }}）</p>
+          <p><strong>スキル効果（固定）:</strong> {{ group.lockedSkill }}</p>
+          <p><strong>付加効果（ランダム）:</strong> 希望した効果: {{ wantedAdditional }}</p>
         </div>
       </div>
 

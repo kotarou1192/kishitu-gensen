@@ -12,11 +12,11 @@ defineProps<Props>();
 <template>
   <div class="results-section">
     <div class="selected-info">
-      <h3>選択されたドロップ</h3>
+      <h3>選択された基質効果</h3>
       <ul>
-        <li><strong>基礎：</strong>{{ result.wanted.base }}</li>
-        <li><strong>付加：</strong>{{ result.wanted.additional }}</li>
-        <li><strong>スキル：</strong>{{ result.wanted.skill }}</li>
+        <li><strong>基礎効果：</strong>{{ result.wanted.base }}</li>
+        <li><strong>付加効果：</strong>{{ result.wanted.additional }}</li>
+        <li><strong>スキル効果：</strong>{{ result.wanted.skill }}</li>
       </ul>
     </div>
 

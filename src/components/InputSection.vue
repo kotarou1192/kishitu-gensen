@@ -21,10 +21,10 @@ const emit = defineEmits<Emits>();
 
 <template>
   <div class="input-section">
-    <h2>欲しいドロップを選択</h2>
+    <h2>欲しい基質の効果を選択</h2>
     <div class="selectors">
       <div class="selector-group">
-        <label for="base">基礎：</label>
+        <label for="base">基礎効果：</label>
         <select 
           id="base" 
           :value="selectedBase"
@@ -37,7 +37,7 @@ const emit = defineEmits<Emits>();
       </div>
 
       <div class="selector-group">
-        <label for="additional">付加：</label>
+        <label for="additional">付加効果：</label>
         <select 
           id="additional" 
           :value="selectedAdditional"
@@ -50,7 +50,7 @@ const emit = defineEmits<Emits>();
       </div>
 
       <div class="selector-group">
-        <label for="skill">スキル：</label>
+        <label for="skill">スキル効果：</label>
         <select 
           id="skill" 
           :value="selectedSkill"
@@ -95,7 +95,8 @@ const emit = defineEmits<Emits>();
 
 .selector-group label {
   font-weight: 600;
-  min-width: 80px;
+  width: 100px;
+  flex-shrink: 0;
 }
 
 .selector-group select {
