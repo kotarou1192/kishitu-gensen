@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OGP画像生成</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    #canvas {
+      border: 1px solid #ccc;
+      display: block;
+      margin: 20px auto;
+      background: white;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 15px 30px;
+      font-size: 16px;
+      background: #646cff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #535bf2;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    p {
+      text-align: center;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>OGP画像生成ツール</h1>
+  <p>下のボタンをクリックして、ogp.png をダウンロードしてください</p>
+  <canvas id="canvas" width="1200" height="630"></canvas>
+  <button onclick="downloadImage()">ogp.png をダウンロード</button>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Draw background gradient
+    const bgGradient = ctx.createLinearGradient(0, 0, 1200, 630);
+    bgGradient.addColorStop(0, '#1a1a2e');
+    bgGradient.addColorStop(0.5, '#16213e');
+    bgGradient.addColorStop(1, '#0f3460');
+    ctx.fillStyle = bgGradient;
+    ctx.fillRect(0, 0, 1200, 630);
+
+    // Draw decorative lines
+    const accentGradient = ctx.createLinearGradient(0, 0, 1200, 0);
+    accentGradient.addColorStop(0, '#646cff');
+    accentGradient.addColorStop(1, '#4a5fff');
+    
+    ctx.strokeStyle = accentGradient;
+    ctx.globalAlpha = 0.5;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(0, 100);
+    ctx.lineTo(1200, 100);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.moveTo(0, 530);
+    ctx.lineTo(1200, 530);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // Draw decorative corners
+    ctx.fillStyle = '#646cff';
+    ctx.globalAlpha = 0.8;
+    
+    // Top-left
+    ctx.fillRect(50, 50, 80, 3);
+    ctx.fillRect(50, 50, 3, 80);
+    
+    // Top-right
+    ctx.fillRect(1070, 50, 80, 3);
+    ctx.fillRect(1147, 50, 3, 80);
+    
+    // Bottom-left
+    ctx.fillRect(50, 577, 80, 3);
+    ctx.fillRect(50, 500, 3, 80);
+    
+    // Bottom-right
+    ctx.fillRect(1070, 577, 80, 3);
+    ctx.fillRect(1147, 500, 3, 80);
+    
+    ctx.globalAlpha = 1;
+
+    // Draw emoji/icon
+    ctx.font = '80px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('🎮', 600, 200);
+
+    // Draw main title
+    ctx.font = 'bold 72px Arial, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('基質厳選ツール', 600, 300);
+
+    // Draw subtitle
+    ctx.font = '36px Arial, sans-serif';
+    ctx.fillStyle = '#a0a0ff';
+    ctx.fillText('アークナイツ：エンドフィールド', 600, 360);
+
+    // Draw separator line
+    ctx.strokeStyle = '#646cff';
+    ctx.globalAlpha = 0.6;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(350, 400);
+    ctx.lineTo(850, 400);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // Draw description
+    ctx.font = '28px Arial, sans-serif';
+    ctx.fillStyle = '#d0d0d0';
+    ctx.fillText('欲しい基質を選択すると、一緒に狙える基質を', 600, 460);
+    ctx.fillText('超域活性点ごとに全パターン表示', 600, 500);
+
+    function downloadImage() {
+      const link = document.createElement('a');
+      link.download = 'ogp.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  </script>
+</body>
+</html>
