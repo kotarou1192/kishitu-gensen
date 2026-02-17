@@ -35,12 +35,18 @@ const weaponCountText = computed(() => {
 
       <div class="lock-info">
         <div v-if="group.mode === '付加固定'">
-          <p><strong class="label-additional">付加効果（固定）:</strong> <span class="effect-additional">{{ group.lockedAdditional }}</span></p>
-          <p><strong class="label-skill">スキル効果（ランダム）:</strong> 希望した効果: <span class="effect-skill">{{ wantedSkill }}</span></p>
+          <div class="required-choices required-additional">
+            <strong class="label-additional">付加効果（必須選択）:</strong>
+            <p class="required-list"><span class="effect-additional">{{ group.lockedAdditional }}</span></p>
+          </div>
+          <p class="random-note"><strong class="label-skill">スキル効果（ランダム）:</strong> 希望した効果: <span class="effect-skill">{{ wantedSkill }}</span></p>
         </div>
         <div v-else>
-          <p><strong class="label-skill">スキル効果（固定）:</strong> <span class="effect-skill">{{ group.lockedSkill }}</span></p>
-          <p><strong class="label-additional">付加効果（ランダム）:</strong> 希望した効果: <span class="effect-additional">{{ wantedAdditional }}</span></p>
+          <div class="required-choices required-skill">
+            <strong class="label-skill">スキル効果（必須選択）:</strong>
+            <p class="required-list"><span class="effect-skill">{{ group.lockedSkill }}</span></p>
+          </div>
+          <p class="random-note"><strong class="label-additional">付加効果（ランダム）:</strong> 希望した効果: <span class="effect-additional">{{ wantedAdditional }}</span></p>
         </div>
       </div>
 
@@ -84,10 +90,26 @@ const weaponCountText = computed(() => {
   border-radius: 4px;
 }
 
+.required-additional {
+  background: rgba(100, 181, 246, 0.1);
+  border-left: 3px solid #64b5f6;
+}
+
+.required-skill {
+  background: rgba(102, 187, 106, 0.1);
+  border-left: 3px solid #66bb6a;
+}
+
 .required-list {
   margin: 0.3rem 0 0 1rem;
-  color: #ffd700;
   font-weight: 500;
+}
+
+.random-note {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  font-size: 0.95em;
+  opacity: 0.85;
 }
 
 .base-choices ul, .lock-info ul {
@@ -96,10 +118,6 @@ const weaponCountText = computed(() => {
 }
 
 .base-choices li {
-  margin: 0.3rem 0;
-}
-
-.lock-info p {
   margin: 0.3rem 0;
 }
 
