@@ -125,7 +125,7 @@ const formattedResults = computed(() => {
         <h3 class="area-name">■ {{ area.areaName }}</h3>
 
         <div v-if="area.groups.length === 0" class="no-result">
-          なし（このエリアでは目的の武器は入手できません）
+          なし（このエリアでは目的の基質は入手できません）
         </div>
 
         <div v-for="(group, idx) in area.groups" :key="idx" class="pattern-group">
@@ -154,21 +154,21 @@ const formattedResults = computed(() => {
 
             <div class="weapons-list">
               <div v-if="group.byRarity[6]?.length" class="rarity-section rarity-6">
-                <h5>⭐⭐⭐⭐⭐⭐</h5>
+                <h5>⭐6</h5>
                 <ul>
                   <li v-for="(weapon, i) in group.byRarity[6]" :key="i">{{ weapon }}</li>
                 </ul>
               </div>
 
               <div v-if="group.byRarity[5]?.length" class="rarity-section rarity-5">
-                <h5>⭐⭐⭐⭐⭐</h5>
+                <h5>⭐5</h5>
                 <ul>
                   <li v-for="(weapon, i) in group.byRarity[5]" :key="i">{{ weapon }}</li>
                 </ul>
               </div>
 
               <div v-if="group.byRarity[4]?.length" class="rarity-section rarity-4">
-                <h5>⭐⭐⭐⭐</h5>
+                <h5>⭐4</h5>
                 <ul>
                   <li v-for="(weapon, i) in group.byRarity[4]" :key="i">{{ weapon }}</li>
                 </ul>
