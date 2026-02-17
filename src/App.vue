@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import InputSection from './components/InputSection.vue';
 import ResultsSection from './components/ResultsSection.vue';
+import DescriptionBox from './components/DescriptionBox.vue';
 import { useKishitsuCalculation } from './composables/useKishitsuCalculation';
 
 const {
@@ -23,6 +24,8 @@ const {
       <p class="subtitle">アークナイツ：エンドフィールド - 基質（武器）厳選補助</p>
     </header>
 
+    <DescriptionBox />
+
     <InputSection
       :all-base-effects="allBaseEffects"
       :all-additional-effects="allAdditionalEffects"
@@ -41,6 +44,15 @@ const {
     </div>
 
     <ResultsSection v-if="result" :result="result" />
+
+    <footer class="footer">
+      <p>使いやすかったらシェアしてくださると励みになります 😊</p>
+      <p class="repo-link">
+        <a href="https://github.com/kotarou1192/kishitu-gensen" target="_blank" rel="noopener noreferrer">
+          GitHub リポジトリ
+        </a>
+      </p>
+    </footer>
   </div>
 </template>
 
@@ -68,5 +80,33 @@ header {
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 1.5rem;
+  color: #666;
+  font-size: 0.9rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer p {
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.footer p:last-child {
+  margin-bottom: 0;
+}
+
+.repo-link a {
+  color: #646cff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.repo-link a:hover {
+  text-decoration: underline;
 }
 </style>
