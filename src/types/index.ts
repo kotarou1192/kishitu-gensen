@@ -15,6 +15,8 @@ export interface PatternGroup {
   mode: string;
   patternCount: number;
   baseChoicesList: string[][];
+  requiredBaseChoices: string[]; // 全パターン共通の必須選択
+  variableBaseChoicesList: string[][]; // 各パターンで異なる部分
   lockedAdditional?: string;
   lockedSkill?: string;
   byRarity: RarityMap;

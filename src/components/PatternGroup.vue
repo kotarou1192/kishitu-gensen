@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import RaritySection from './RaritySection.vue';
 import type { PatternGroup } from '../types';
+import { computed } from 'vue';
 
 interface Props {
   group: PatternGroup;
@@ -8,21 +9,28 @@ interface Props {
   wantedSkill: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const weaponCountText = computed(() => {
+  const counts: string[] = [];
+  if (props.group.byRarity[6]?.length) counts.push(`☆6: ${props.group.byRarity[6].length}個`);
+  if (props.group.byRarity[5]?.length) counts.push(`☆5: ${props.group.byRarity[5].length}個`);
+  if (props.group.byRarity[4]?.length) counts.push(`☆4: ${props.group.byRarity[4].length}個`);
+  if (props.group.byRarity.other?.length) counts.push(`☆?: ${props.group.byRarity.other.length}個`);
+  return counts.length > 0 ? counts.join('、') : '武器なし';
+});
 </script>
 
 <template>
   <div class="pattern-group">
-    <h4 class="mode-title">【{{ group.mode }}】（{{ group.patternCount }}パターン）</h4>
+    <h4 class="mode-title">【{{ group.mode }}】（{{ weaponCountText }}）</h4>
 
     <div class="pattern-details">
       <div class="base-choices">
-        <strong>基礎（3種選択）候補:</strong>
-        <ul>
-          <li v-for="(choices, i) in group.baseChoicesList" :key="i">
-            {{ choices.join(', ') }}
-          </li>
-        </ul>
+        <div v-if="group.requiredBaseChoices.length > 0" class="required-choices">
+          <strong>基礎（必須選択）:</strong>
+          <p class="required-list">{{ group.requiredBaseChoices.join(', ') }}</p>
+        </div>
       </div>
 
       <div class="lock-info">
@@ -66,6 +74,20 @@ defineProps<Props>();
 
 .base-choices, .lock-info {
   margin-bottom: 1rem;
+}
+
+.required-choices {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: rgba(255, 215, 0, 0.1);
+  border-left: 3px solid #ffd700;
+  border-radius: 4px;
+}
+
+.required-list {
+  margin: 0.3rem 0 0 1rem;
+  color: #ffd700;
+  font-weight: 500;
 }
 
 .base-choices ul, .lock-info ul {

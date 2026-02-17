@@ -178,6 +178,28 @@ const consolidatePatterns = (areaTable: any, patterns: any) => {
       return true;
     });
 
+    // 全パターンの共通部分を計算
+    if (g.baseChoicesList.length > 0) {
+      // 最初のパターンから開始
+      let commonSet = new Set(g.baseChoicesList[0]);
+
+      // 残りのパターンとの積集合を取る
+      for (let i = 1; i < g.baseChoicesList.length; i++) {
+        const currentSet = new Set(g.baseChoicesList[i]);
+        commonSet = new Set([...commonSet].filter((x) => currentSet.has(x)));
+      }
+
+      g.requiredBaseChoices = Array.from(commonSet).sort();
+
+      // 各パターンから共通部分を除いた可変部分を計算
+      g.variableBaseChoicesList = g.baseChoicesList.map((choices: string[]) =>
+        choices.filter((c) => !commonSet.has(c)).sort(),
+      );
+    } else {
+      g.requiredBaseChoices = [];
+      g.variableBaseChoicesList = [];
+    }
+
     // レア別に整列
     g.byRarity = { 6: [], 5: [], 4: [], other: [] };
     for (const w of g.weapons) {
