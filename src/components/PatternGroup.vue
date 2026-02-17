@@ -28,19 +28,19 @@ const weaponCountText = computed(() => {
     <div class="pattern-details">
       <div class="base-choices">
         <div v-if="group.requiredBaseChoices.length > 0" class="required-choices">
-          <strong>基礎効果（必須選択）:</strong>
-          <p class="required-list">{{ group.requiredBaseChoices.join(', ') }}</p>
+          <strong class="label-base">基礎効果（必須選択）:</strong>
+          <p class="required-list"><span class="effect-base">{{ group.requiredBaseChoices.join(', ') }}</span></p>
         </div>
       </div>
 
       <div class="lock-info">
         <div v-if="group.mode === '付加固定'">
-          <p><strong>付加効果（固定）:</strong> {{ group.lockedAdditional }}</p>
-          <p><strong>スキル効果（ランダム）:</strong> 希望した効果: {{ wantedSkill }}</p>
+          <p><strong class="label-additional">付加効果（固定）:</strong> <span class="effect-additional">{{ group.lockedAdditional }}</span></p>
+          <p><strong class="label-skill">スキル効果（ランダム）:</strong> 希望した効果: <span class="effect-skill">{{ wantedSkill }}</span></p>
         </div>
         <div v-else>
-          <p><strong>スキル効果（固定）:</strong> {{ group.lockedSkill }}</p>
-          <p><strong>付加効果（ランダム）:</strong> 希望した効果: {{ wantedAdditional }}</p>
+          <p><strong class="label-skill">スキル効果（固定）:</strong> <span class="effect-skill">{{ group.lockedSkill }}</span></p>
+          <p><strong class="label-additional">付加効果（ランダム）:</strong> 希望した効果: <span class="effect-additional">{{ wantedAdditional }}</span></p>
         </div>
       </div>
 
@@ -105,5 +105,32 @@ const weaponCountText = computed(() => {
 
 .weapons-list {
   margin-top: 1rem;
+}
+
+.label-base {
+  color: #ffd700;
+}
+
+.label-additional {
+  color: #64b5f6;
+}
+
+.label-skill {
+  color: #66bb6a;
+}
+
+.effect-base {
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.effect-additional {
+  color: #64b5f6;
+  font-weight: 600;
+}
+
+.effect-skill {
+  color: #66bb6a;
+  font-weight: 600;
 }
 </style>

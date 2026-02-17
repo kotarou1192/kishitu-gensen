@@ -14,9 +14,9 @@ defineProps<Props>();
     <div class="selected-info">
       <h3>選択された基質効果</h3>
       <ul>
-        <li><strong>基礎効果：</strong>{{ result.wanted.base }}</li>
-        <li><strong>付加効果：</strong>{{ result.wanted.additional }}</li>
-        <li><strong>スキル効果：</strong>{{ result.wanted.skill }}</li>
+        <li><strong class="label-base">基礎効果：</strong><span class="effect-base">{{ result.wanted.base }}</span></li>
+        <li><strong class="label-additional">付加効果：</strong><span class="effect-additional">{{ result.wanted.additional }}</span></li>
+        <li><strong class="label-skill">スキル効果：</strong><span class="effect-skill">{{ result.wanted.skill }}</span></li>
       </ul>
     </div>
 
@@ -53,5 +53,32 @@ defineProps<Props>();
 
 .selected-info li {
   margin: 0.3rem 0;
+}
+
+.label-base {
+  color: #ffd700;
+}
+
+.label-additional {
+  color: #64b5f6;
+}
+
+.label-skill {
+  color: #66bb6a;
+}
+
+.effect-base {
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.effect-additional {
+  color: #64b5f6;
+  font-weight: 600;
+}
+
+.effect-skill {
+  color: #66bb6a;
+  font-weight: 600;
 }
 </style>

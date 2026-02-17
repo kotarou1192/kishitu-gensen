@@ -24,9 +24,10 @@ const emit = defineEmits<Emits>();
     <h2>欲しい基質の効果を選択</h2>
     <div class="selectors">
       <div class="selector-group">
-        <label for="base">基礎効果：</label>
+        <label for="base" class="label-base">基礎効果：</label>
         <select 
-          id="base" 
+          id="base"
+          class="select-base"
           :value="selectedBase"
           @change="emit('update:selectedBase', ($event.target as HTMLSelectElement).value)"
         >
@@ -37,9 +38,10 @@ const emit = defineEmits<Emits>();
       </div>
 
       <div class="selector-group">
-        <label for="additional">付加効果：</label>
+        <label for="additional" class="label-additional">付加効果：</label>
         <select 
-          id="additional" 
+          id="additional"
+          class="select-additional"
           :value="selectedAdditional"
           @change="emit('update:selectedAdditional', ($event.target as HTMLSelectElement).value)"
         >
@@ -50,9 +52,10 @@ const emit = defineEmits<Emits>();
       </div>
 
       <div class="selector-group">
-        <label for="skill">スキル効果：</label>
+        <label for="skill" class="label-skill">スキル効果：</label>
         <select 
-          id="skill" 
+          id="skill"
+          class="select-skill"
           :value="selectedSkill"
           @change="emit('update:selectedSkill', ($event.target as HTMLSelectElement).value)"
         >
@@ -102,6 +105,34 @@ const emit = defineEmits<Emits>();
 .selector-group select {
   flex: 1;
   max-width: 400px;
+  font-weight: 600;
+}
+
+.label-base {
+  color: #ffd700;
+}
+
+.select-base {
+  border: 2px solid #ffd700;
+  color: #ffd700;
+}
+
+.label-additional {
+  color: #64b5f6;
+}
+
+.select-additional {
+  border: 2px solid #64b5f6;
+  color: #64b5f6;
+}
+
+.label-skill {
+  color: #66bb6a;
+}
+
+.select-skill {
+  border: 2px solid #66bb6a;
+  color: #66bb6a;
 }
 
 .calc-button {

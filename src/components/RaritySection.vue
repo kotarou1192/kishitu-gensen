@@ -17,13 +17,36 @@ const rarityClass = (rarity: number | 'other') => {
   }
   return '';
 };
+
+// 武器名をパースして名前と効果に分ける
+const parseWeaponName = (weaponText: string) => {
+  // 形式: 武器名（基礎効果, 付加効果, スキル効果）
+  const match = weaponText.match(/^(.+?)（(.+?), (.+?), (.+?)）$/);
+  if (match) {
+    return {
+      name: match[1],
+      base: match[2],
+      additional: match[3],
+      skill: match[4],
+    };
+  }
+  // パースできない場合は元のテキストをそのまま返す
+  return { name: weaponText, base: null, additional: null, skill: null };
+};
 </script>
 
 <template>
   <div v-if="weapons.length" class="rarity-section" :class="rarityClass(rarity)">
     <h5>{{ rarityLabel(rarity) }}</h5>
     <ul>
-      <li v-for="(weapon, i) in weapons" :key="i">{{ weapon }}</li>
+      <li v-for="(weapon, i) in weapons" :key="i">
+        <template v-if="parseWeaponName(weapon).base !== null">
+          {{ parseWeaponName(weapon).name }}（<span class="effect-base">{{ parseWeaponName(weapon).base }}</span>, <span class="effect-additional">{{ parseWeaponName(weapon).additional }}</span>, <span class="effect-skill">{{ parseWeaponName(weapon).skill }}</span>）
+        </template>
+        <template v-else>
+          {{ weapon }}
+        </template>
+      </li>
     </ul>
   </div>
 </template>
@@ -72,5 +95,20 @@ const rarityClass = (rarity: number | 'other') => {
 .rarity-section li {
   margin: 0.3rem 0;
   font-size: 0.95em;
+}
+
+.effect-base {
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.effect-additional {
+  color: #64b5f6;
+  font-weight: 600;
+}
+
+.effect-skill {
+  color: #66bb6a;
+  font-weight: 600;
 }
 </style>
