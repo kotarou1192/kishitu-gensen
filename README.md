@@ -115,6 +115,12 @@ docker compose exec app npm test -- --run
 2. Source を「GitHub Actions」に設定
 3. `main`ブランチにプッシュすると自動的にデプロイされます
 
+### CI/CD
+
+- **テスト**: プッシュ・プルリクエスト時に自動実行
+- **デプロイ**: main ブランチへのプッシュで自動デプロイ
+- **Dependabot**: 毎週月曜日 9:00 (JST) に依存関係を自動チェック
+
 ## 🛠 技術スタック
 
 - Vue.js 3
