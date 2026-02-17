@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import InputSection from './components/InputSection.vue';
 import ResultsSection from './components/ResultsSection.vue';
 import DescriptionBox from './components/DescriptionBox.vue';
+import ChangelogSection from './components/ChangelogSection.vue';
 import { useKishitsuCalculation } from './composables/useKishitsuCalculation';
 
 const {
@@ -71,6 +72,8 @@ const copyLink = async () => {
     </div>
 
     <ResultsSection v-if="result" :result="result" />
+
+    <ChangelogSection />
 
     <footer class="footer">
       <p>使いやすかったらシェアしてくださると励みになります 😊</p>

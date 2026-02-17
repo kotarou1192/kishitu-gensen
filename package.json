@@ -4,8 +4,8 @@
   "type": "module",
   "description": "アークナイツ：エンドフィールド 基質厳選補助ツール",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "dev": "node scripts/generate-changelog.js && vite",
+    "build": "node scripts/generate-changelog.js && vue-tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
