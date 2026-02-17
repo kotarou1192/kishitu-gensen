@@ -1,4 +1,4 @@
-.PHONY: help install dev build preview test test-ui clean docker-up docker-down docker-build docker-test docker-logs
+.PHONY: help install dev build preview test test-ui clean generate-ogp docker-up docker-down docker-build docker-test docker-logs
 
 # デフォルトターゲット: ヘルプを表示
 help:
@@ -9,6 +9,7 @@ help:
 	@echo "  make preview       - ビルド結果をプレビュー"
 	@echo "  make test          - テストを実行"
 	@echo "  make test-ui       - テストUIを起動"
+	@echo "  make generate-ogp  - OGP画像を生成"
 	@echo "  make clean         - ビルド成果物を削除"
 	@echo ""
 	@echo "Docker関連:"
@@ -45,6 +46,10 @@ test-ui:
 # ビルド成果物を削除
 clean:
 	rm -rf dist node_modules
+
+# OGP画像を生成
+generate-ogp:
+	npm run ogp:generate
 
 # Dockerコンテナを起動（フォアグラウンド）
 docker-up:

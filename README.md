@@ -43,6 +43,9 @@ make test
 
 # ビルド
 make build
+
+# OGP画像を生成
+make generate-ogp
 ```
 
 #### Docker Compose で開発
@@ -78,6 +81,9 @@ npm run build
 
 # プレビュー
 npm run preview
+
+# OGP画像を生成
+npm run ogp:generate
 ```
 
 #### Docker Compose を使う方法
@@ -114,8 +120,10 @@ docker compose exec app npm test -- --run
 - Vue.js 3
 - TypeScript
 - Vite
+- Vitest (テスト)
+- Docker & Docker Compose
 - GitHub Pages
-- GitHub Actions
+- GitHub Actions (CI/CD)
 
 ## 📄 ライセンス
 

@@ -8,7 +8,8 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "ogp:generate": "node scripts/generate-ogp.js"
   },
   "dependencies": {
     "vue": "^3.4.21"
