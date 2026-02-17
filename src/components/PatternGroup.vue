@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import RaritySection from './RaritySection.vue';
 import type { PatternGroup } from '../types';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 interface Props {
   group: PatternGroup;
+  areaName: string;
   patternNumber: number;
   wantedAdditional: string;
   wantedSkill: string;
@@ -20,13 +21,45 @@ const weaponCountText = computed(() => {
   if (props.group.byRarity.other?.length) counts.push(`☆?: ${props.group.byRarity.other.length}個`);
   return counts.length > 0 ? counts.join('、') : '武器なし';
 });
+
+// エリア名とパターン番号からユニークIDを生成
+const patternId = computed(() => {
+  const areaId = props.areaName.replace(/\s+/g, '-').toLowerCase();
+  return `${areaId}-pattern-${props.patternNumber}`;
+});
+
+const copySuccess = ref(false);
+
+const copyPatternLink = async () => {
+  const url = `${window.location.origin}${window.location.pathname}${window.location.search}#${patternId.value}`;
+  try {
+    await navigator.clipboard.writeText(url);
+    copySuccess.value = true;
+    setTimeout(() => {
+      copySuccess.value = false;
+    }, 2000);
+  } catch (err) {
+    console.error('コピーに失敗しました:', err);
+  }
+};
 </script>
 
 <template>
-  <div class="pattern-group">
+  <div :id="patternId" class="pattern-group">
     <div class="pattern-header">
-      <h4 class="pattern-title">パターン {{ patternNumber }}</h4>
-      <span class="weapon-count">{{ weaponCountText }}</span>
+      <div class="header-left">
+        <h4 class="pattern-title">パターン {{ patternNumber }}</h4>
+        <span class="weapon-count">{{ weaponCountText }}</span>
+      </div>
+      <button @click="copyPatternLink" class="copy-link-button" :class="{ copied: copySuccess }" title="このパターンへのリンクをコピー">
+        <svg v-if="!copySuccess" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+        <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </button>
     </div>
 
     <div class="pattern-details">
@@ -82,6 +115,12 @@ const weaponCountText = computed(() => {
   border-bottom: 2px solid rgba(100, 108, 255, 0.5);
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .pattern-title {
   margin: 0;
   font-size: 1.2em;
@@ -94,6 +133,30 @@ const weaponCountText = computed(() => {
   font-size: 0.9em;
   color: #aaa;
   font-weight: 500;
+}
+
+.copy-link-button {
+  background: rgba(100, 108, 255, 0.2);
+  border: 1px solid rgba(100, 108, 255, 0.4);
+  color: #646cff;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-link-button:hover {
+  background: rgba(100, 108, 255, 0.3);
+  border-color: #646cff;
+}
+
+.copy-link-button.copied {
+  background: rgba(102, 187, 106, 0.2);
+  border-color: #66bb6a;
+  color: #66bb6a;
 }
 
 .pattern-details {
@@ -172,5 +235,22 @@ const weaponCountText = computed(() => {
 .effect-skill {
   color: #66bb6a;
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .pattern-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .header-left {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .copy-link-button {
+    align-self: flex-end;
+  }
 }
 </style>

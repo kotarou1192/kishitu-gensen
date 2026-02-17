@@ -23,6 +23,7 @@ defineProps<Props>();
       v-for="(group, idx) in area.groups"
       :key="idx"
       :group="group"
+      :area-name="area.areaName"
       :pattern-number="idx + 1"
       :wanted-additional="wantedAdditional"
       :wanted-skill="wantedSkill"
