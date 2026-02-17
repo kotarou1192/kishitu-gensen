@@ -1,8 +1,10 @@
 import { ref, computed, onMounted, nextTick, watch } from "vue";
 import { run, DROP_EFFECTS } from "../lib/kishitu-gensen";
 import type { CalculationResult, AreaResult } from "../types";
+import { useCalculationHistory } from "./useCalculationHistory";
 
 export function useKishitsuCalculation() {
+  const { addToHistory } = useCalculationHistory();
   // エリアごとの選択肢を取得
   const allBaseEffects = Array.from(
     new Set(Object.values(DROP_EFFECTS).flatMap((area) => area.base)),
@@ -79,6 +81,12 @@ export function useKishitsuCalculation() {
       } else {
         result.value = output as CalculationResult;
         updateUrl();
+        // 計算履歴に追加
+        addToHistory(
+          selectedBase.value,
+          selectedAdditional.value,
+          selectedSkill.value,
+        );
       }
     } catch (e) {
       error.value = `エラーが発生しました: ${e}`;

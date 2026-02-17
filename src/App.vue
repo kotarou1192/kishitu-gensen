@@ -4,7 +4,9 @@ import InputSection from './components/InputSection.vue';
 import ResultsSection from './components/ResultsSection.vue';
 import DescriptionBox from './components/DescriptionBox.vue';
 import ChangelogSection from './components/ChangelogSection.vue';
+import HistorySection from './components/HistorySection.vue';
 import { useKishitsuCalculation } from './composables/useKishitsuCalculation';
+import type { HistoryItem } from './composables/useCalculationHistory';
 
 const {
   allBaseEffects,
@@ -19,6 +21,21 @@ const {
 } = useKishitsuCalculation();
 
 const copySuccess = ref(false);
+
+// 履歴から選択された項目で計算
+const handleSelectHistory = (item: HistoryItem) => {
+  selectedBase.value = item.base;
+  selectedAdditional.value = item.additional;
+  selectedSkill.value = item.skill;
+  calculate();
+  // 計算結果セクションにスムーズスクロール
+  setTimeout(() => {
+    const resultsElement = document.querySelector('.results-section');
+    if (resultsElement) {
+      resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 100);
+};
 
 const shareToX = () => {
   const text = 'アークナイツ：エンドフィールド 基質厳選ツール';
@@ -66,6 +83,8 @@ const copyLink = async () => {
       @update:selected-skill="selectedSkill = $event"
       @calculate="calculate"
     />
+
+    <HistorySection @select-history="handleSelectHistory" />
 
     <div v-if="error" class="error-message">
       ⚠️ {{ error }}
