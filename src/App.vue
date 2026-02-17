@@ -22,11 +22,12 @@ const copySuccess = ref(false);
 const shareToX = () => {
   const text = 'アークナイツ：エンドフィールド 基質厳選ツール';
   const url = window.location.href;
-  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+  const hashtags = 'エンドフィールド';
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent(hashtags)}`, '_blank');
 };
 
 const shareToBluesky = () => {
-  const text = `アークナイツ：エンドフィールド 基質厳選ツール\n${window.location.href}`;
+  const text = `アークナイツ：エンドフィールド 基質厳選ツール\n${window.location.href}\n\n#エンドフィールド`;
   window.open(`https://bsky.app/intent/compose?text=${encodeURIComponent(text)}`, '_blank');
 };
 
