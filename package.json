@@ -12,7 +12,7 @@
     "ogp:generate": "node scripts/generate-ogp.js"
   },
   "dependencies": {
-    "vue": "^3.4.21"
+    "vue": "^3.5.29"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.4",
