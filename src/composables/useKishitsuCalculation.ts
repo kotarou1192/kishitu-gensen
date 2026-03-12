@@ -34,14 +34,14 @@ export function useKishitsuCalculation() {
     const additional = params.get("additional");
     const skill = params.get("skill");
 
-    if (base && allBaseEffects.includes(base)) {
-      selectedBase.value = base;
+    if (base && allBaseEffects.includes(base as any)) {
+      selectedBase.value = base as typeof selectedBase.value;
     }
-    if (additional && allAdditionalEffects.includes(additional)) {
-      selectedAdditional.value = additional;
+    if (additional && allAdditionalEffects.includes(additional as any)) {
+      selectedAdditional.value = additional as typeof selectedAdditional.value;
     }
-    if (skill && allSkillEffects.includes(skill)) {
-      selectedSkill.value = skill;
+    if (skill && allSkillEffects.includes(skill as any)) {
+      selectedSkill.value = skill as typeof selectedSkill.value;
     }
 
     // パラメータがあれば自動計算
