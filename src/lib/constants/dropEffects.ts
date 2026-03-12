@@ -1,4 +1,56 @@
-export const DROP_EFFECTS = {
+export type BaseEffect =
+  | "敏捷UP"
+  | "筋力UP"
+  | "意志UP"
+  | "知性UP"
+  | "メイン能力UP";
+export type AdditionalEffect =
+  | "攻撃力UP"
+  | "HPアップ"
+  | "物理ダメージUP"
+  | "灼熱ダメージUP"
+  | "電磁ダメージUP"
+  | "寒冷ダメージUP"
+  | "自然ダメージUP"
+  | "会心率UP"
+  | "アーツ強度UP"
+  | "必殺技効率UP"
+  | "アーツダメージUP"
+  | "回復効率UP";
+export type SkillEffect =
+  | "強攻"
+  | "圧制"
+  | "追襲"
+  | "破砕"
+  | "巧技"
+  | "噴発"
+  | "流回"
+  | "効率"
+  | "昂揚"
+  | "付術"
+  | "治癒"
+  | "切骨"
+  | "残虐"
+  | "夜幕";
+
+type DropEffect = {
+  base: BaseEffect[];
+  additional: AdditionalEffect[];
+  skill: SkillEffect[];
+};
+
+type area =
+  | "中枢エリア"
+  | "源石研究パーク"
+  | "鉱山エリア"
+  | "エネルギー高地"
+  | "武陵城";
+
+type DropEffects = {
+  [key in area]: DropEffect;
+};
+
+export const DROP_EFFECTS: DropEffects = {
   中枢エリア: {
     base: ["敏捷UP", "筋力UP", "意志UP", "知性UP", "メイン能力UP"],
     additional: [

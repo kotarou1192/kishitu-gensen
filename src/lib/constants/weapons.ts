@@ -1,4 +1,19 @@
-export const WEAPONS = [
+import {
+  type BaseEffect,
+  type AdditionalEffect,
+  type SkillEffect,
+} from "./dropEffects";
+
+type Weapon = {
+  rarity: 3 | 4 | 5 | 6;
+  name: string;
+  category: "アーツユニット" | "拳銃" | "大剣" | "長柄武器" | "片手剣";
+  base: BaseEffect;
+  additional: AdditionalEffect;
+  skill: SkillEffect;
+};
+
+export const WEAPONS: Weapon[] = [
   {
     rarity: 6,
     name: "遺忘",
@@ -13,7 +28,7 @@ export const WEAPONS = [
     category: "アーツユニット",
     base: "意志UP",
     additional: "HPアップ",
-    skill: "治療",
+    skill: "治癒",
   },
   {
     rarity: 6,
@@ -219,7 +234,7 @@ export const WEAPONS = [
     rarity: 6,
     name: "望郷",
     category: "拳銃",
-    base: "俊敏UP",
+    base: "敏捷UP",
     additional: "寒冷ダメージUP",
     skill: "圧制",
   },
@@ -413,7 +428,7 @@ export const WEAPONS = [
     category: "アーツユニット",
     base: "意志UP",
     additional: "攻撃力UP",
-    skill: "制圧",
+    skill: "圧制",
   },
   {
     rarity: 4,
@@ -421,7 +436,7 @@ export const WEAPONS = [
     category: "拳銃",
     base: "知性UP",
     additional: "攻撃力UP",
-    skill: "制圧",
+    skill: "圧制",
   },
   {
     rarity: 4,
@@ -437,7 +452,7 @@ export const WEAPONS = [
     category: "大剣",
     base: "筋力UP",
     additional: "攻撃力UP",
-    skill: "制圧",
+    skill: "圧制",
   },
   {
     rarity: 4,
@@ -453,7 +468,7 @@ export const WEAPONS = [
     category: "長柄武器",
     base: "意志UP",
     additional: "アーツダメージUP",
-    skill: "制圧",
+    skill: "圧制",
   },
   {
     rarity: 4,
@@ -469,7 +484,7 @@ export const WEAPONS = [
     category: "片手剣",
     base: "敏捷UP",
     additional: "物理ダメージUP",
-    skill: "制圧",
+    skill: "圧制",
   },
   {
     rarity: 4,
