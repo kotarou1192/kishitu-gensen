@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PatternGroup from './PatternGroup.vue';
-import type { AreaResult } from '../types';
+import PatternGroup from "./PatternGroup.vue";
+import type { AreaResult } from "../types";
 
 interface Props {
   area: AreaResult;
@@ -40,9 +40,17 @@ defineProps<Props>();
 }
 
 .area-name {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(13, 13, 13, 0.95);
+  backdrop-filter: blur(10px);
   color: #646cff;
-  margin-bottom: 1rem;
+  margin: -1rem -1rem 1rem -1rem;
+  padding: 1rem;
   font-size: 1.5em;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 2px solid rgba(100, 108, 255, 0.3);
 }
 
 .no-result {

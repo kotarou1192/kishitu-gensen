@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import RaritySection from './RaritySection.vue';
-import type { PatternGroup } from '../types';
-import { computed, ref } from 'vue';
+import RaritySection from "./RaritySection.vue";
+import type { PatternGroup } from "../types";
+import { computed, ref } from "vue";
 
 interface Props {
   group: PatternGroup;
@@ -15,16 +15,20 @@ const props = defineProps<Props>();
 
 const weaponCountText = computed(() => {
   const counts: string[] = [];
-  if (props.group.byRarity[6]?.length) counts.push(`☆6: ${props.group.byRarity[6].length}個`);
-  if (props.group.byRarity[5]?.length) counts.push(`☆5: ${props.group.byRarity[5].length}個`);
-  if (props.group.byRarity[4]?.length) counts.push(`☆4: ${props.group.byRarity[4].length}個`);
-  if (props.group.byRarity.other?.length) counts.push(`☆?: ${props.group.byRarity.other.length}個`);
-  return counts.length > 0 ? counts.join('、') : '武器なし';
+  if (props.group.byRarity[6]?.length)
+    counts.push(`☆6: ${props.group.byRarity[6].length}個`);
+  if (props.group.byRarity[5]?.length)
+    counts.push(`☆5: ${props.group.byRarity[5].length}個`);
+  if (props.group.byRarity[4]?.length)
+    counts.push(`☆4: ${props.group.byRarity[4].length}個`);
+  if (props.group.byRarity.other?.length)
+    counts.push(`☆?: ${props.group.byRarity.other.length}個`);
+  return counts.length > 0 ? counts.join("、") : "武器なし";
 });
 
 // エリア名とパターン番号からユニークIDを生成
 const patternId = computed(() => {
-  const areaId = props.areaName.replace(/\s+/g, '-').toLowerCase();
+  const areaId = props.areaName.replace(/\s+/g, "-").toLowerCase();
   return `${areaId}-pattern-${props.patternNumber}`;
 });
 
@@ -39,7 +43,7 @@ const copyPatternLink = async () => {
       copySuccess.value = false;
     }, 2000);
   } catch (err) {
-    console.error('コピーに失敗しました:', err);
+    console.error("コピーに失敗しました:", err);
   }
 };
 </script>
@@ -51,12 +55,43 @@ const copyPatternLink = async () => {
         <h4 class="pattern-title">パターン {{ patternNumber }}</h4>
         <span class="weapon-count">{{ weaponCountText }}</span>
       </div>
-      <button @click="copyPatternLink" class="copy-link-button" :class="{ copied: copySuccess }" title="このパターンへのリンクをコピー">
-        <svg v-if="!copySuccess" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+      <button
+        @click="copyPatternLink"
+        class="copy-link-button"
+        :class="{ copied: copySuccess }"
+        title="このパターンへのリンクをコピー"
+      >
+        <svg
+          v-if="!copySuccess"
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+          ></path>
+          <path
+            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+          ></path>
         </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          v-else
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
       </button>
@@ -64,9 +99,16 @@ const copyPatternLink = async () => {
 
     <div class="pattern-details">
       <div class="base-choices">
-        <div v-if="group.requiredBaseChoices.length > 0" class="required-choices">
+        <div
+          v-if="group.requiredBaseChoices.length > 0"
+          class="required-choices"
+        >
           <strong class="label-base">基礎効果（必須選択）:</strong>
-          <p class="required-list"><span class="effect-base">{{ group.requiredBaseChoices.join(', ') }}</span></p>
+          <p class="required-list">
+            <span class="effect-base">{{
+              group.requiredBaseChoices.join(", ")
+            }}</span>
+          </p>
         </div>
       </div>
 
@@ -74,16 +116,29 @@ const copyPatternLink = async () => {
         <div v-if="group.mode === '付加固定'">
           <div class="required-choices required-additional">
             <strong class="label-additional">付加効果（必須選択）:</strong>
-            <p class="required-list"><span class="effect-additional">{{ group.lockedAdditional }}</span></p>
+            <p class="required-list">
+              <span class="effect-additional">{{
+                group.lockedAdditional
+              }}</span>
+            </p>
           </div>
-          <p class="random-note"><strong class="label-skill">スキル効果（ランダム）:</strong> 希望した効果: <span class="effect-skill">{{ wantedSkill }}</span></p>
+          <p class="random-note">
+            <strong class="label-skill">スキル効果（ランダム）:</strong>
+            希望した効果: <span class="effect-skill">{{ wantedSkill }}</span>
+          </p>
         </div>
         <div v-else>
           <div class="required-choices required-skill">
             <strong class="label-skill">スキル効果（必須選択）:</strong>
-            <p class="required-list"><span class="effect-skill">{{ group.lockedSkill }}</span></p>
+            <p class="required-list">
+              <span class="effect-skill">{{ group.lockedSkill }}</span>
+            </p>
           </div>
-          <p class="random-note"><strong class="label-additional">付加効果（ランダム）:</strong> 希望した効果: <span class="effect-additional">{{ wantedAdditional }}</span></p>
+          <p class="random-note">
+            <strong class="label-additional">付加効果（ランダム）:</strong>
+            希望した効果:
+            <span class="effect-additional">{{ wantedAdditional }}</span>
+          </p>
         </div>
       </div>
 
@@ -91,7 +146,10 @@ const copyPatternLink = async () => {
         <RaritySection :rarity="6" :weapons="group.byRarity[6] || []" />
         <RaritySection :rarity="5" :weapons="group.byRarity[5] || []" />
         <RaritySection :rarity="4" :weapons="group.byRarity[4] || []" />
-        <RaritySection :rarity="'other'" :weapons="group.byRarity.other || []" />
+        <RaritySection
+          :rarity="'other'"
+          :weapons="group.byRarity.other || []"
+        />
       </div>
     </div>
   </div>
@@ -102,17 +160,26 @@ const copyPatternLink = async () => {
   margin-bottom: 1.5rem;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  overflow: hidden;
   border: 1px solid rgba(100, 108, 255, 0.3);
+  scroll-margin-top: 7rem;
 }
 
 .pattern-header {
-  background: linear-gradient(135deg, rgba(100, 108, 255, 0.3) 0%, rgba(100, 108, 255, 0.15) 100%);
+  position: sticky;
+  top: 3.8rem;
+  z-index: 15;
+  background: linear-gradient(
+    135deg,
+    rgba(100, 108, 255, 0.3) 0%,
+    rgba(100, 108, 255, 0.15) 100%
+  );
+  backdrop-filter: blur(10px);
   padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 2px solid rgba(100, 108, 255, 0.5);
+  border-radius: 8px 8px 0 0;
 }
 
 .header-left {
@@ -163,7 +230,8 @@ const copyPatternLink = async () => {
   padding: 1rem;
 }
 
-.base-choices, .lock-info {
+.base-choices,
+.lock-info {
   margin-bottom: 1rem;
 }
 
@@ -197,7 +265,8 @@ const copyPatternLink = async () => {
   opacity: 0.85;
 }
 
-.base-choices ul, .lock-info ul {
+.base-choices ul,
+.lock-info ul {
   list-style: none;
   padding-left: 1rem;
 }
