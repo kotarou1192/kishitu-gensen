@@ -10,17 +10,9 @@
           :class="{ active: showFavoritesOnly }"
         >
           ☆
-          {{
-            showFavoritesOnly
-              ? t("historyFilterAll")
-              : t("historyFilterFavorites")
-          }}
+          {{ showFavoritesOnly ? t("historyFilterAll") : t("historyFilterFavorites") }}
         </button>
-        <button
-          v-if="history.length > 0"
-          @click="clearHistory"
-          class="clear-button"
-        >
+        <button v-if="history.length > 0" @click="clearHistory" class="clear-button">
           {{ t("historyClearAll") }}
         </button>
       </div>
@@ -32,11 +24,7 @@
       {{ t("historyEmptyFavorites") }}
     </div>
     <div v-else class="history-list">
-      <div
-        v-for="(item, index) in filteredHistory"
-        :key="index"
-        class="history-item"
-      >
+      <div v-for="(item, index) in filteredHistory" :key="index" class="history-item">
         <button
           @click.stop="toggleFavorite(history.indexOf(item))"
           class="favorite-button"
@@ -73,10 +61,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import {
-  useCalculationHistory,
-  type HistoryItem,
-} from "../composables/useCalculationHistory";
+import { useCalculationHistory, type HistoryItem } from "../composables/useCalculationHistory";
 import { useI18n } from "../composables/useI18n";
 import { localizeEffectName } from "../lib/i18n";
 
@@ -84,8 +69,7 @@ defineEmits<{
   selectHistory: [item: HistoryItem];
 }>();
 
-const { history, removeFromHistory, clearHistory, toggleFavorite } =
-  useCalculationHistory();
+const { history, removeFromHistory, clearHistory, toggleFavorite } = useCalculationHistory();
 const { locale, t } = useI18n();
 
 // お気に入りのみ表示するフィルター
@@ -107,9 +91,7 @@ const formatTime = (timestamp: number) => {
   // 1時間以内
   if (diff < 60 * 60 * 1000) {
     const minutes = Math.floor(diff / (60 * 1000));
-    return minutes === 0
-      ? t("historyJustNow")
-      : t("historyMinutesAgo", { minutes });
+    return minutes === 0 ? t("historyJustNow") : t("historyMinutesAgo", { minutes });
   }
 
   // 24時間以内

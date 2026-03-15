@@ -1,9 +1,4 @@
-export type BaseEffect =
-  | "敏捷UP"
-  | "筋力UP"
-  | "意志UP"
-  | "知性UP"
-  | "メイン能力UP";
+export type BaseEffect = "敏捷UP" | "筋力UP" | "意志UP" | "知性UP" | "メイン能力UP";
 
 export type AdditionalEffect =
   | "攻撃力UP"

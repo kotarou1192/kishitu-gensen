@@ -1,11 +1,5 @@
 import { ref, watch } from "vue";
-import {
-  LOCALE_STORAGE_KEY,
-  MESSAGES,
-  translate,
-  type Locale,
-  type MessageKey,
-} from "../lib/i18n";
+import { LOCALE_STORAGE_KEY, MESSAGES, translate, type Locale, type MessageKey } from "../lib/i18n";
 
 const locale = ref<Locale>("ja");
 let initialized = false;

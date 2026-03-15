@@ -26,23 +26,15 @@ export function useKishitsuCalculation() {
 
   // エリアごとの選択肢を取得
   const allBaseEffects = Array.from(
-    new Set(
-      allAreas.flatMap((area) => area.effects.base.map((effect) => effect.ja)),
-    ),
+    new Set(allAreas.flatMap((area) => area.effects.base.map((effect) => effect.ja))),
   ).sort();
 
   const allAdditionalEffects = Array.from(
-    new Set(
-      allAreas.flatMap((area) =>
-        area.effects.additional.map((effect) => effect.ja),
-      ),
-    ),
+    new Set(allAreas.flatMap((area) => area.effects.additional.map((effect) => effect.ja))),
   ).sort();
 
   const allSkillEffects = Array.from(
-    new Set(
-      allAreas.flatMap((area) => area.effects.skill.map((effect) => effect.ja)),
-    ),
+    new Set(allAreas.flatMap((area) => area.effects.skill.map((effect) => effect.ja))),
   ).sort();
 
   // 選択された値
@@ -58,22 +50,17 @@ export function useKishitsuCalculation() {
   const loadFromUrl = () => {
     const params = new URLSearchParams(window.location.search);
     const base =
-      decodeBaseEffectParam(params.get("b")) ??
-      (params.get("base") as BaseEffect | null);
+      decodeBaseEffectParam(params.get("b")) ?? (params.get("base") as BaseEffect | null);
     const additional =
       decodeAdditionalEffectParam(params.get("a")) ??
       (params.get("additional") as AdditionalEffect | null);
     const skill =
-      decodeSkillEffectParam(params.get("s")) ??
-      (params.get("skill") as SkillEffect | null);
+      decodeSkillEffectParam(params.get("s")) ?? (params.get("skill") as SkillEffect | null);
 
     if (base && allBaseEffects.includes(base as BaseEffect)) {
       selectedBase.value = base as BaseEffect;
     }
-    if (
-      additional &&
-      allAdditionalEffects.includes(additional as AdditionalEffect)
-    ) {
+    if (additional && allAdditionalEffects.includes(additional as AdditionalEffect)) {
       selectedAdditional.value = additional as AdditionalEffect;
     }
     if (skill && allSkillEffects.includes(skill as SkillEffect)) {
@@ -90,9 +77,7 @@ export function useKishitsuCalculation() {
   const updateUrl = () => {
     const params = new URLSearchParams();
     const baseParam = encodeBaseEffectParam(selectedBase.value);
-    const additionalParam = encodeAdditionalEffectParam(
-      selectedAdditional.value,
-    );
+    const additionalParam = encodeAdditionalEffectParam(selectedAdditional.value);
     const skillParam = encodeSkillEffectParam(selectedSkill.value);
 
     if (baseParam) params.set("b", baseParam);
@@ -138,11 +123,7 @@ export function useKishitsuCalculation() {
         result.value = output as CalculationResult;
         updateUrl();
         // 計算履歴に追加
-        addToHistory(
-          selectedBase.value,
-          selectedAdditional.value,
-          selectedSkill.value,
-        );
+        addToHistory(selectedBase.value, selectedAdditional.value, selectedSkill.value);
       }
     } catch (e) {
       error.value = t("errorUnexpected", { error: String(e) });

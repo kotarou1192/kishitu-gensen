@@ -41,9 +41,7 @@ const findDuplicates = (values) => {
     bucket.set(value, bucket.get(value) + 1);
   }
 
-  return [...bucket.entries()]
-    .filter(([, count]) => count > 1)
-    .sort((a, b) => b[1] - a[1]);
+  return [...bucket.entries()].filter(([, count]) => count > 1).sort((a, b) => b[1] - a[1]);
 };
 
 const weaponsSource = readUtf8(weaponsPath);
@@ -95,9 +93,7 @@ const jaKeyMismatches = i18nEntries.filter((entry) => entry.key !== entry.ja);
 
 const i18nKeySet = new Set(i18nEntries.map((item) => item.key));
 const missingI18nEntries = weapons.filter((item) => !i18nKeySet.has(item.name));
-const orphanI18nEntries = i18nEntries.filter(
-  (item) => !weaponSet.has(item.key),
-);
+const orphanI18nEntries = i18nEntries.filter((item) => !weaponSet.has(item.key));
 
 const suspiciousEnglishEntries = i18nEntries.filter((entry) => {
   const en = entry.en.trim();
@@ -192,12 +188,8 @@ if (outputJson) {
 }
 
 console.log("Weapon maintenance check");
-console.log(
-  `- WEAPONS: ${summary.weaponsCount}, weaponI18nMap: ${summary.i18nCount}`,
-);
-console.log(
-  `- Errors: ${summary.errorsCount}, Warnings: ${summary.warningsCount}`,
-);
+console.log(`- WEAPONS: ${summary.weaponsCount}, weaponI18nMap: ${summary.i18nCount}`);
+console.log(`- Errors: ${summary.errorsCount}, Warnings: ${summary.warningsCount}`);
 
 if (errors.length > 0) {
   console.log("\n[Errors]");
@@ -226,9 +218,7 @@ for (const issue of errors) {
 
     console.log("  Suggested entries to paste into weaponI18nMap:");
     for (const item of issue.detail) {
-      console.log(
-        `  [\"${item.name}\", { ja: \"${item.name}\", en: \"TODO_EN_WEAPON_NAME\" }],`,
-      );
+      console.log(`  ["${item.name}", { ja: "${item.name}", en: "TODO_EN_WEAPON_NAME" }],`);
     }
   }
 
@@ -242,9 +232,7 @@ for (const issue of errors) {
   if (issue.type === "jaKeyMismatches") {
     console.log("- i18n JA key and ja-field mismatch:");
     for (const item of issue.detail) {
-      console.log(
-        `  - key=${item.key}, ja=${item.ja} (i18n/index.ts:${item.line})`,
-      );
+      console.log(`  - key=${item.key}, ja=${item.ja} (i18n/index.ts:${item.line})`);
     }
   }
 
@@ -279,9 +267,7 @@ for (const issue of warnings) {
   if (issue.type === "suspiciousEnglishEntries") {
     console.log("- suspicious EN names (empty/same as JA/TODO-like):");
     for (const item of issue.detail) {
-      console.log(
-        `  - ${item.key}: \"${item.en}\" (i18n/index.ts:${item.line})`,
-      );
+      console.log(`  - ${item.key}: "${item.en}" (i18n/index.ts:${item.line})`);
     }
   }
 }

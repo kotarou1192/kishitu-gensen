@@ -1,9 +1,5 @@
 import { ref, watch } from "vue";
-import type {
-  AdditionalEffect,
-  BaseEffect,
-  SkillEffect,
-} from "../lib/constants/dropEffects";
+import type { AdditionalEffect, BaseEffect, SkillEffect } from "../lib/constants/dropEffects";
 
 export interface HistoryItem {
   base: BaseEffect;
@@ -61,17 +57,10 @@ export function useCalculationHistory() {
   }
 
   // 計算履歴を追加する
-  const addToHistory = (
-    base: BaseEffect,
-    additional: AdditionalEffect,
-    skill: SkillEffect,
-  ) => {
+  const addToHistory = (base: BaseEffect, additional: AdditionalEffect, skill: SkillEffect) => {
     // 同じ組み合わせが既に存在するか確認
     const existingIndex = history.value.findIndex(
-      (item) =>
-        item.base === base &&
-        item.additional === additional &&
-        item.skill === skill,
+      (item) => item.base === base && item.additional === additional && item.skill === skill,
     );
 
     // 既存のものがあれば、お気に入り状態を保持して削除

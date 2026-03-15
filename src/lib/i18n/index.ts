@@ -1,10 +1,5 @@
 import { DROP_EFFECTS } from "../constants/dropEffects";
-import type {
-  AdditionalEffect,
-  AreaJa,
-  BaseEffect,
-  SkillEffect,
-} from "../constants/dropEffects";
+import type { AdditionalEffect, AreaJa, BaseEffect, SkillEffect } from "../constants/dropEffects";
 
 export type Locale = "ja" | "en";
 
@@ -86,18 +81,15 @@ export const MESSAGES = {
     outputBaseChoicesTitle: "基礎（3種選択）候補:",
     outputLockedAdditional: "付加（固定）: {effect}",
     outputLockedSkill: "スキル（固定）: {effect}",
-    outputRandomSkill:
-      "スキル（ランダム）: エリアプールから（欲しい: {effect}）",
-    outputRandomAdditional:
-      "付加（ランダム）: エリアプールから（欲しい: {effect}）",
+    outputRandomSkill: "スキル（ランダム）: エリアプールから（欲しい: {effect}）",
+    outputRandomAdditional: "付加（ランダム）: エリアプールから（欲しい: {effect}）",
 
     errorUnexpected: "エラーが発生しました: {error}",
     errorInvalidInputCount:
       "入力が不正です（基礎/付加/スキルを各1つずつ、合計3つ入力してください）",
     errorInvalidItem: "入力が不正です: {item}",
     errorInvalidGroup: "入力が不正です（基礎/付加/スキルのみ）: {item}",
-    errorInvalidGroupCount:
-      "入力が不正です（基礎/付加/スキルが各1つずつ必要です）",
+    errorInvalidGroupCount: "入力が不正です（基礎/付加/スキルが各1つずつ必要です）",
   },
   en: {
     appTitle: "🎮 Substrate Farming Tool",
@@ -129,8 +121,7 @@ export const MESSAGES = {
     resultsAdditionalLabel: "Additional Effect:",
     resultsSkillLabel: "Skill Effect:",
 
-    areaNoResult:
-      "None (your target substrate cannot be obtained in this area)",
+    areaNoResult: "None (your target substrate cannot be obtained in this area)",
 
     patternTitle: "Pattern {number}",
     patternWeaponsNone: "No weapons",
@@ -176,26 +167,19 @@ export const MESSAGES = {
     outputLockedAdditional: "Additional (locked): {effect}",
     outputLockedSkill: "Skill (locked): {effect}",
     outputRandomSkill: "Skill (random): from area pool (wanted: {effect})",
-    outputRandomAdditional:
-      "Additional (random): from area pool (wanted: {effect})",
+    outputRandomAdditional: "Additional (random): from area pool (wanted: {effect})",
 
     errorUnexpected: "An error occurred: {error}",
-    errorInvalidInputCount:
-      "Invalid input (enter exactly one each for base/additional/skill)",
+    errorInvalidInputCount: "Invalid input (enter exactly one each for base/additional/skill)",
     errorInvalidItem: "Invalid input: {item}",
-    errorInvalidGroup:
-      "Invalid input (only base/additional/skill are allowed): {item}",
-    errorInvalidGroupCount:
-      "Invalid input (base/additional/skill must each appear once)",
+    errorInvalidGroup: "Invalid input (only base/additional/skill are allowed): {item}",
+    errorInvalidGroupCount: "Invalid input (base/additional/skill must each appear once)",
   },
 } as const;
 
 export type MessageKey = keyof (typeof MESSAGES)["ja"];
 
-const interpolate = (
-  template: string,
-  params?: Record<string, string | number>,
-): string => {
+const interpolate = (template: string, params?: Record<string, string | number>): string => {
   if (!params) return template;
   return Object.entries(params).reduce((acc, [key, value]) => {
     return acc.replaceAll(`{${key}}`, String(value));
@@ -232,10 +216,7 @@ const weaponI18nMap = new Map<string, { ja: string; en: string }>([
   ["負山", { ja: "負山", en: "Mountain Bearer" }],
   ["勇猛", { ja: "勇猛", en: "Valiant" }],
   ["ダークトーチ", { ja: "ダークトーチ", en: "Umbral Torch" }],
-  [
-    "テルミット・カッター",
-    { ja: "テルミット・カッター", en: "Thermite Cutter" },
-  ],
+  ["テルミット・カッター", { ja: "テルミット・カッター", en: "Thermite Cutter" }],
   ["フーヤオ", { ja: "フーヤオ", en: "Fuyao" }],
   ["フレイムフォージ", { ja: "フレイムフォージ", en: "Flameforge" }],
   ["輝かしき名声", { ja: "輝かしき名声", en: "Resplendent Fame" }],
@@ -266,19 +247,13 @@ const weaponI18nMap = new Map<string, { ja: string; en: string }>([
   ["堅城鋳造者", { ja: "堅城鋳造者", en: "Bastion Forger" }],
   ["鋼鉄余音", { ja: "鋼鉄余音", en: "Steel Resonance" }],
   ["十二問", { ja: "十二問", en: "Twelve Questions" }],
-  [
-    "オート・ハイパーノヴァ",
-    { ja: "オート・ハイパーノヴァ", en: "Hypernova Auto" },
-  ],
+  ["オート・ハイパーノヴァ", { ja: "オート・ハイパーノヴァ", en: "Hypernova Auto" }],
   ["蛍光雷羽", { ja: "蛍光雷羽", en: "Luminous Thunderfeather" }],
   ["ロアーガード", { ja: "ロアーガード", en: "Howling Guard" }],
   ["長路", { ja: "長路", en: "Long Road" }],
   ["工業零点一", { ja: "工業零点一", en: "Industry 0.1" }],
   ["鍛冶師", { ja: "鍛冶師", en: "Smith" }],
-  [
-    "アンゲロス・スレイヤー",
-    { ja: "アンゲロス・スレイヤー", en: "Aggeloslayer" },
-  ],
+  ["アンゲロス・スレイヤー", { ja: "アンゲロス・スレイヤー", en: "Aggeloslayer" }],
   ["開拓者の道標", { ja: "開拓者の道標", en: "Pathfinder's Beacon" }],
   ["緊急設計", { ja: "緊急設計", en: "Emergency Design" }],
   ["潮流", { ja: "潮流", en: "Tideflow" }],
@@ -298,10 +273,7 @@ for (const area of Object.values(DROP_EFFECTS)) {
   }
 }
 
-export const localizeEffectName = (
-  effectJa: string,
-  locale: Locale,
-): string => {
+export const localizeEffectName = (effectJa: string, locale: Locale): string => {
   const value = effectI18nMap.get(effectJa);
   return value ? value[locale] : effectJa;
 };
@@ -311,10 +283,7 @@ export const localizeAreaName = (areaJa: string, locale: Locale): string => {
   return value ? value[locale] : areaJa;
 };
 
-export const localizeWeaponName = (
-  weaponJa: string,
-  locale: Locale,
-): string => {
+export const localizeWeaponName = (weaponJa: string, locale: Locale): string => {
   const value = weaponI18nMap.get(weaponJa);
   return value ? value[locale] : weaponJa;
 };
@@ -380,22 +349,16 @@ export const encodeBaseEffectParam = (value: BaseEffect): string | null => {
   return baseCodec.encodeMap.get(value) ?? null;
 };
 
-export const decodeBaseEffectParam = (
-  param: string | null,
-): BaseEffect | null => {
+export const decodeBaseEffectParam = (param: string | null): BaseEffect | null => {
   if (!param) return null;
   return baseCodec.decodeMap.get(param) ?? null;
 };
 
-export const encodeAdditionalEffectParam = (
-  value: AdditionalEffect,
-): string | null => {
+export const encodeAdditionalEffectParam = (value: AdditionalEffect): string | null => {
   return additionalCodec.encodeMap.get(value) ?? null;
 };
 
-export const decodeAdditionalEffectParam = (
-  param: string | null,
-): AdditionalEffect | null => {
+export const decodeAdditionalEffectParam = (param: string | null): AdditionalEffect | null => {
   if (!param) return null;
   return additionalCodec.decodeMap.get(param) ?? null;
 };
@@ -404,9 +367,7 @@ export const encodeSkillEffectParam = (value: SkillEffect): string | null => {
   return skillCodec.encodeMap.get(value) ?? null;
 };
 
-export const decodeSkillEffectParam = (
-  param: string | null,
-): SkillEffect | null => {
+export const decodeSkillEffectParam = (param: string | null): SkillEffect | null => {
   if (!param) return null;
   return skillCodec.decodeMap.get(param) ?? null;
 };

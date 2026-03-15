@@ -5,12 +5,7 @@ import {
   type DropEffectsI18n,
 } from "./constants/dropEffects";
 import { WEAPONS } from "./constants/weapons";
-import {
-  localizeAreaName,
-  localizeEffectName,
-  translate,
-  type Locale,
-} from "./i18n";
+import { localizeAreaName, localizeEffectName, translate, type Locale } from "./i18n";
 import { uniq, combinations, normalizeEffect } from "./utils";
 
 type AreaEffectPools = {
@@ -74,9 +69,10 @@ const parseWantedTriple = (
 
   for (const rawItem of rows) {
     const item = String(rawItem).trim();
-    const [group, raw]: ["基礎" | "付加" | "スキル", string] = item.split(
-      "：",
-    ) as ["基礎" | "付加" | "スキル", string];
+    const [group, raw]: ["基礎" | "付加" | "スキル", string] = item.split("：") as [
+      "基礎" | "付加" | "スキル",
+      string,
+    ];
     if (!group || !raw) {
       return {
         error: translate(locale, "errorInvalidItem", { item }),
@@ -116,10 +112,7 @@ const parseWantedTriple = (
 // - base: 3種類（その中からランダムで武器baseが決まる）
 // - additional or skill: どちらか1種類を固定
 // ==============================
-const enumerateValidLockPatternsForArea = (
-  areaPools: AreaEffectPools,
-  wanted: any,
-) => {
+const enumerateValidLockPatternsForArea = (areaPools: AreaEffectPools, wanted: any) => {
   const basePool = uniq(areaPools.base || []);
   const addPool = uniq(areaPools.additional || []);
   const skillPool = uniq(areaPools.skill || []);
@@ -129,10 +122,7 @@ const enumerateValidLockPatternsForArea = (
 
   // base3選択：wanted.base + 他2つ
   const otherBases = basePool.filter((x) => x !== wanted.base);
-  const baseTriples = combinations(otherBases, 2).map((pair) => [
-    wanted.base,
-    ...pair,
-  ]);
+  const baseTriples = combinations(otherBases, 2).map((pair) => [wanted.base, ...pair]);
 
   const patterns = [];
 
@@ -171,10 +161,7 @@ const enumerateValidLockPatternsForArea = (
 // - スキル固定なら weapon.skill == lockedSkill
 // - ランダム側の値がエリアpoolに含まれる（念のため）
 // ==============================
-const weaponsPossibleUnderPattern = (
-  areaPools: AreaEffectPools,
-  pattern: any,
-) => {
+const weaponsPossibleUnderPattern = (areaPools: AreaEffectPools, pattern: any) => {
   const addPool = new Set(areaPools.additional || []);
   const skillPool = new Set(areaPools.skill || []);
   const baseSet = new Set(pattern.baseChoices);
@@ -205,11 +192,7 @@ const weaponsPossibleUnderPattern = (
 // - 同一エリア・同一モードで、武器集合が同じパターンはまとめる
 // - まとめたものは baseChoices を候補として列挙（同一武器集合に対し複数base3があり得るため）
 // ==============================
-const consolidatePatterns = (
-  areaPools: AreaEffectPools,
-  patterns: any,
-  locale: Locale,
-) => {
+const consolidatePatterns = (areaPools: AreaEffectPools, patterns: any, locale: Locale) => {
   // key = mode + weaponNames signature
   const map = new Map();
 
@@ -238,9 +221,7 @@ const consolidatePatterns = (
   }
 
   // 整形：patternCount（=成立パターン数）が多いものを上に
-  const groups = Array.from(map.values()).sort(
-    (a, b) => b.patternCount - a.patternCount,
-  );
+  const groups = Array.from(map.values()).sort((a, b) => b.patternCount - a.patternCount);
 
   // baseChoicesList の重複を潰す
   for (const g of groups) {
@@ -297,12 +278,7 @@ const consolidatePatterns = (
 // ==============================
 // 表示用
 // ==============================
-const formatArea = (
-  areaName: string,
-  wanted: any,
-  groups: any,
-  locale: Locale,
-) => {
+const formatArea = (areaName: string, wanted: any, groups: any, locale: Locale) => {
   const lines = [];
   lines.push(`■${localizeAreaName(areaName, locale)}`);
 

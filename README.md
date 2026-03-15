@@ -76,6 +76,12 @@ npm run dev
 # テストを実行
 npm test
 
+# ESLint を実行
+npm run lint
+
+# Prettier チェックを実行
+npm run format:check
+
 # ビルド
 npm run build
 

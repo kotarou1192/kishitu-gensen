@@ -9,11 +9,7 @@ import { useKishitsuCalculation } from "./composables/useKishitsuCalculation";
 import type { HistoryItem } from "./composables/useCalculationHistory";
 import { useI18n } from "./composables/useI18n";
 import type { Locale } from "./lib/i18n";
-import type {
-  AdditionalEffect,
-  BaseEffect,
-  SkillEffect,
-} from "./lib/constants/dropEffects";
+import type { AdditionalEffect, BaseEffect, SkillEffect } from "./lib/constants/dropEffects";
 
 const {
   allBaseEffects,
@@ -58,10 +54,7 @@ const shareToX = () => {
 const shareToBluesky = () => {
   const hashTag = `#${t("appShareHashtag")}`;
   const text = `${t("appTitle")}\n${window.location.href}\n\n${hashTag}`;
-  window.open(
-    `https://bsky.app/intent/compose?text=${encodeURIComponent(text)}`,
-    "_blank",
-  );
+  window.open(`https://bsky.app/intent/compose?text=${encodeURIComponent(text)}`, "_blank");
 };
 
 const handleLocaleChange = (next: Locale) => {
@@ -174,11 +167,7 @@ const copyLink = async () => {
           {{ t("appShareBluesky") }}
         </button>
 
-        <button
-          @click="copyLink"
-          class="share-button copy-button"
-          :class="{ copied: copySuccess }"
-        >
+        <button @click="copyLink" class="share-button copy-button" :class="{ copied: copySuccess }">
           <svg
             v-if="!copySuccess"
             xmlns="http://www.w3.org/2000/svg"
@@ -192,9 +181,7 @@ const copyLink = async () => {
             stroke-linejoin="round"
           >
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path
-              d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
-            ></path>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
           </svg>
           <svg
             v-else

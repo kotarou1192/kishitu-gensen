@@ -8,10 +8,9 @@ const __dirname = dirname(__filename);
 
 try {
   // 最新5件のコミット情報を取得
-  const gitLog = execSync(
-    'git log -5 --pretty=format:"%H|%h|%s|%an|%ae|%ad" --date=iso',
-    { encoding: "utf-8" },
-  );
+  const gitLog = execSync('git log -5 --pretty=format:"%H|%h|%s|%an|%ae|%ad" --date=iso', {
+    encoding: "utf-8",
+  });
 
   const commits = gitLog.split("\n").map((line) => {
     const [hash, shortHash, message, author, email, isoDate] = line.split("|");

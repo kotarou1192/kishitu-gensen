@@ -100,12 +100,8 @@ const copyPatternLink = async () => {
           stroke-linecap="round"
           stroke-linejoin="round"
         >
-          <path
-            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
-          ></path>
-          <path
-            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
-          ></path>
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
         </svg>
         <svg
           v-else
@@ -126,10 +122,7 @@ const copyPatternLink = async () => {
 
     <div class="pattern-details">
       <div class="base-choices">
-        <div
-          v-if="group.requiredBaseChoices.length > 0"
-          class="required-choices"
-        >
+        <div v-if="group.requiredBaseChoices.length > 0" class="required-choices">
           <strong class="label-base">{{ t("patternRequiredBase") }}</strong>
           <p class="required-list">
             <span class="effect-base">{{
@@ -144,9 +137,7 @@ const copyPatternLink = async () => {
       <div class="lock-info">
         <div v-if="group.mode === '付加固定'">
           <div class="required-choices required-additional">
-            <strong class="label-additional">{{
-              t("patternRequiredAdditional")
-            }}</strong>
+            <strong class="label-additional">{{ t("patternRequiredAdditional") }}</strong>
             <p class="required-list">
               <span class="effect-additional">{{
                 localizeEffectName(group.lockedAdditional || "", locale)
@@ -156,9 +147,7 @@ const copyPatternLink = async () => {
           <p class="random-note">
             <strong class="label-skill">{{ t("patternRandomSkill") }}</strong>
             {{ t("patternDesiredEffect") }}
-            <span class="effect-skill">{{
-              localizeEffectName(wantedSkill, locale)
-            }}</span>
+            <span class="effect-skill">{{ localizeEffectName(wantedSkill, locale) }}</span>
           </p>
         </div>
         <div v-else>
@@ -171,9 +160,7 @@ const copyPatternLink = async () => {
             </p>
           </div>
           <p class="random-note">
-            <strong class="label-additional">{{
-              t("patternRandomAdditional")
-            }}</strong>
+            <strong class="label-additional">{{ t("patternRandomAdditional") }}</strong>
             {{ t("patternDesiredEffect") }}
             <span class="effect-additional">{{
               localizeEffectName(wantedAdditional, locale)
@@ -186,10 +173,7 @@ const copyPatternLink = async () => {
         <RaritySection :rarity="6" :weapons="group.byRarity[6] || []" />
         <RaritySection :rarity="5" :weapons="group.byRarity[5] || []" />
         <RaritySection :rarity="4" :weapons="group.byRarity[4] || []" />
-        <RaritySection
-          :rarity="'other'"
-          :weapons="group.byRarity.other || []"
-        />
+        <RaritySection :rarity="'other'" :weapons="group.byRarity.other || []" />
       </div>
     </div>
   </div>
@@ -208,11 +192,7 @@ const copyPatternLink = async () => {
   position: sticky;
   top: 3.8rem;
   z-index: 15;
-  background: linear-gradient(
-    135deg,
-    rgba(100, 108, 255, 0.3) 0%,
-    rgba(100, 108, 255, 0.15) 100%
-  );
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.3) 0%, rgba(100, 108, 255, 0.15) 100%);
   backdrop-filter: blur(10px);
   padding: 0.75rem 1rem;
   display: flex;

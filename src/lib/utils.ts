@@ -21,11 +21,7 @@ export const combinations = <T>(arr: T[], k: number): T[][] => {
   return res;
 };
 
-export const normalizeEffect = (
-  group: string,
-  raw: string,
-  dropEffects: DropEffectsI18n,
-) => {
+export const normalizeEffect = (group: string, raw: string, dropEffects: DropEffectsI18n) => {
   const key = String(raw).trim();
 
   // どこかで完全一致するならそれを優先（例外吸収）

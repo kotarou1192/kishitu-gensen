@@ -55,22 +55,10 @@ onMounted(async () => {
         {{ t("changelogLoadFailed") }}
       </div>
 
-      <div
-        v-else-if="changelog && changelog.commits.length > 0"
-        class="commits-list"
-      >
-        <div
-          v-for="commit in changelog.commits"
-          :key="commit.hash"
-          class="commit-item"
-        >
+      <div v-else-if="changelog && changelog.commits.length > 0" class="commits-list">
+        <div v-for="commit in changelog.commits" :key="commit.hash" class="commit-item">
           <div class="commit-header">
-            <a
-              :href="commit.url"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="commit-hash"
-            >
+            <a :href="commit.url" target="_blank" rel="noopener noreferrer" class="commit-hash">
               {{ commit.shortHash }}
             </a>
             <span class="commit-date">{{ commit.date }}</span>

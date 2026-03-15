@@ -48,27 +48,21 @@ describe("kishitu-gensen - run 関数", () => {
     const input = ["基礎：知性", "基礎：筋力", "スキル：夜幕"];
     const result = run(input);
 
-    expect(result.error).toBe(
-      "入力が不正です（基礎/付加/スキルが各1つずつ必要です）",
-    );
+    expect(result.error).toBe("入力が不正です（基礎/付加/スキルが各1つずつ必要です）");
   });
 
   it("付加が2つある場合はエラーを返す", () => {
     const input = ["基礎：知性", "付加：攻撃力", "付加：HP"];
     const result = run(input);
 
-    expect(result.error).toBe(
-      "入力が不正です（基礎/付加/スキルが各1つずつ必要です）",
-    );
+    expect(result.error).toBe("入力が不正です（基礎/付加/スキルが各1つずつ必要です）");
   });
 
   it("スキルが2つある場合はエラーを返す", () => {
     const input = ["基礎：知性", "スキル：夜幕", "スキル：強攻"];
     const result = run(input);
 
-    expect(result.error).toBe(
-      "入力が不正です（基礎/付加/スキルが各1つずつ必要です）",
-    );
+    expect(result.error).toBe("入力が不正です（基礎/付加/スキルが各1つずつ必要です）");
   });
 
   it("不正なグループ名の場合はエラーを返す", () => {
@@ -132,9 +126,7 @@ describe("kishitu-gensen - run 関数", () => {
     expect(result.results).toBeDefined();
 
     const areaNames = result.results?.map((r) => r.areaName) || [];
-    const expectedAreas = Object.values(DROP_EFFECTS).map(
-      (area) => area.area.ja,
-    );
+    const expectedAreas = Object.values(DROP_EFFECTS).map((area) => area.area.ja);
 
     expect(areaNames.sort()).toEqual(expectedAreas.sort());
   });
@@ -146,9 +138,7 @@ describe("kishitu-gensen - run 関数", () => {
     expect(result.error).toBeUndefined();
     expect(result.text).toBeDefined();
 
-    for (const areaName of Object.values(DROP_EFFECTS).map(
-      (area) => area.area.ja,
-    )) {
+    for (const areaName of Object.values(DROP_EFFECTS).map((area) => area.area.ja)) {
       expect(result.text).toContain(areaName);
     }
   });
@@ -179,9 +169,7 @@ describe("DROP_EFFECTS", () => {
 
   it("全エリアにメイン能力UPが含まれる", () => {
     for (const area of Object.values(DROP_EFFECTS)) {
-      expect(
-        area.effects.base.some((effect) => effect.ja === "メイン能力UP"),
-      ).toBe(true);
+      expect(area.effects.base.some((effect) => effect.ja === "メイン能力UP")).toBe(true);
     }
   });
 
@@ -189,9 +177,7 @@ describe("DROP_EFFECTS", () => {
     const basicStats = ["敏捷UP", "筋力UP", "意志UP", "知性UP"];
     for (const area of Object.values(DROP_EFFECTS)) {
       for (const stat of basicStats) {
-        expect(area.effects.base.some((effect) => effect.ja === stat)).toBe(
-          true,
-        );
+        expect(area.effects.base.some((effect) => effect.ja === stat)).toBe(true);
       }
     }
   });

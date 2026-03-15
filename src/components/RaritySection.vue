@@ -43,11 +43,7 @@ const parseWeaponName = (weaponText: string) => {
 </script>
 
 <template>
-  <div
-    v-if="weapons.length"
-    class="rarity-section"
-    :class="rarityClass(rarity)"
-  >
+  <div v-if="weapons.length" class="rarity-section" :class="rarityClass(rarity)">
     <h5>{{ rarityLabel(rarity) }}</h5>
     <ul>
       <li v-for="(weapon, i) in weapons" :key="i" class="weapon-item">
@@ -64,17 +60,11 @@ const parseWeaponName = (weaponText: string) => {
               }}</span
               >,
               <span class="effect-additional">{{
-                localizeEffectName(
-                  String(parseWeaponName(weapon).additional),
-                  locale,
-                )
+                localizeEffectName(String(parseWeaponName(weapon).additional), locale)
               }}</span
               >,
               <span class="effect-skill">{{
-                localizeEffectName(
-                  String(parseWeaponName(weapon).skill),
-                  locale,
-                )
+                localizeEffectName(String(parseWeaponName(weapon).skill), locale)
               }}</span
               >{{ locale === "ja" ? "）" : ")" }}
             </template>

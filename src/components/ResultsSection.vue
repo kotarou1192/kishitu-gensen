@@ -19,23 +19,17 @@ const { locale, t } = useI18n();
       <ul>
         <li>
           <strong class="label-base">{{ t("resultsBaseLabel") }}</strong
-          ><span class="effect-base">{{
-            localizeEffectName(result.wanted.base, locale)
-          }}</span>
+          ><span class="effect-base">{{ localizeEffectName(result.wanted.base, locale) }}</span>
         </li>
         <li>
-          <strong class="label-additional">{{
-            t("resultsAdditionalLabel")
-          }}</strong
+          <strong class="label-additional">{{ t("resultsAdditionalLabel") }}</strong
           ><span class="effect-additional">{{
             localizeEffectName(result.wanted.additional, locale)
           }}</span>
         </li>
         <li>
           <strong class="label-skill">{{ t("resultsSkillLabel") }}</strong
-          ><span class="effect-skill">{{
-            localizeEffectName(result.wanted.skill, locale)
-          }}</span>
+          ><span class="effect-skill">{{ localizeEffectName(result.wanted.skill, locale) }}</span>
         </li>
       </ul>
     </div>

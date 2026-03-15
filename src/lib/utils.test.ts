@@ -91,9 +91,7 @@ describe("normalizeEffect", () => {
 
   it("完全一致が dropEffects にある場合は優先する", () => {
     // DROP_EFFECTS に存在する値はそのまま返される
-    expect(normalizeEffect("基礎", "メイン能力UP", DROP_EFFECTS)).toBe(
-      "メイン能力UP",
-    );
+    expect(normalizeEffect("基礎", "メイン能力UP", DROP_EFFECTS)).toBe("メイン能力UP");
   });
 
   it("前後の空白を除去する", () => {

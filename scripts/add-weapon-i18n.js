@@ -35,20 +35,8 @@ if (!ja || !en || !rarityRaw || !category || !base || !additional || !skill) {
 
 const rarity = Number(rarityRaw);
 const ALLOWED_RARITIES = new Set([3, 4, 5, 6]);
-const ALLOWED_CATEGORIES = new Set([
-  "アーツユニット",
-  "拳銃",
-  "大剣",
-  "長柄武器",
-  "片手剣",
-]);
-const ALLOWED_BASE = new Set([
-  "敏捷UP",
-  "筋力UP",
-  "意志UP",
-  "知性UP",
-  "メイン能力UP",
-]);
+const ALLOWED_CATEGORIES = new Set(["アーツユニット", "拳銃", "大剣", "長柄武器", "片手剣"]);
+const ALLOWED_BASE = new Set(["敏捷UP", "筋力UP", "意志UP", "知性UP", "メイン能力UP"]);
 const ALLOWED_ADDITIONAL = new Set([
   "攻撃力UP",
   "HPアップ",
@@ -126,8 +114,7 @@ if (weaponsEnd === -1) {
 
 const weaponsBlock = weaponsSource.slice(weaponsBlockStart, weaponsEnd);
 
-const mapStartMarker =
-  "const weaponI18nMap = new Map<string, { ja: string; en: string }>([";
+const mapStartMarker = "const weaponI18nMap = new Map<string, { ja: string; en: string }>([";
 const mapStart = source.indexOf(mapStartMarker);
 if (mapStart === -1) {
   console.error("weaponI18nMap start marker not found");
@@ -202,10 +189,8 @@ const enLiteral = JSON.stringify(en);
 const canonicalEntry = `[${jaLiteral}, { ja: ${jaLiteral}, en: ${enLiteral} }]`;
 const escapedJaLiteral = escapeRegExp(jaLiteral);
 
-const weaponEntryPattern = /\{\n[\s\S]*?\n  \},/g;
-const weaponNameLinePattern = new RegExp(
-  `\\n\\s*name:\\s*${escapedJaLiteral},\\n`,
-);
+const weaponEntryPattern = /\{\n[\s\S]*?\n {2}\},/g;
+const weaponNameLinePattern = new RegExp(`\\n\\s*name:\\s*${escapedJaLiteral},\\n`);
 
 let weaponAction = "added";
 let weaponMatched = false;
@@ -236,28 +221,25 @@ if (!weaponMatched) {
   nextWeaponsBlock = appendEntry(nextWeaponsBlock, buildWeaponEntry());
 }
 
-let nextBlock = block;
+let nextBlock;
 let i18nAction = "added";
 const i18nEntryPattern =
   /\[\s*"([^"]+)"\s*,\s*\{\s*ja:\s*"([^"]+)"\s*,\s*en:\s*"([^"]+)"\s*\}\s*,?\s*\]/gs;
 let i18nMatched = false;
 
-nextBlock = block.replace(
-  i18nEntryPattern,
-  (entry, key, currentJa, currentEn) => {
-    if (i18nMatched) return entry;
-    if (key !== ja) return entry;
+nextBlock = block.replace(i18nEntryPattern, (entry, key, currentJa, currentEn) => {
+  if (i18nMatched) return entry;
+  if (key !== ja) return entry;
 
-    i18nMatched = true;
-    if (currentJa === ja && currentEn === en) {
-      i18nAction = "unchanged";
-      return entry;
-    }
+  i18nMatched = true;
+  if (currentJa === ja && currentEn === en) {
+    i18nAction = "unchanged";
+    return entry;
+  }
 
-    i18nAction = "updated";
-    return canonicalEntry;
-  },
-);
+  i18nAction = "updated";
+  return canonicalEntry;
+});
 
 if (!i18nMatched) {
   nextBlock = appendEntry(nextBlock, `  ${canonicalEntry},`);
@@ -272,9 +254,7 @@ if (nextWeaponsSource === weaponsSource && nextI18nSource === source) {
 }
 
 if (dryRun) {
-  console.log(
-    `[dry-run] weapon ${weaponAction}, i18n ${i18nAction}: ${ja} -> ${en}`,
-  );
+  console.log(`[dry-run] weapon ${weaponAction}, i18n ${i18nAction}: ${ja} -> ${en}`);
   process.exit(0);
 }
 

@@ -10,12 +10,6 @@ const canvas = createCanvas(1200, 630);
 const ctx = canvas.getContext("2d");
 
 // Draw background gradient (approximated with steps)
-const bgColors = [
-  { pos: 0, color: "#1a1a2e" },
-  { pos: 0.5, color: "#16213e" },
-  { pos: 1, color: "#0f3460" },
-];
-
 for (let i = 0; i < 1200; i++) {
   const ratio = i / 1200;
   let color;
