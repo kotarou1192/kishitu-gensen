@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import PatternGroup from "./PatternGroup.vue";
 import type { AreaResult } from "../types";
+import { localizeAreaName } from "../lib/i18n";
+import { useI18n } from "../composables/useI18n";
 
 interface Props {
   area: AreaResult;
@@ -9,14 +11,15 @@ interface Props {
 }
 
 defineProps<Props>();
+const { locale, t } = useI18n();
 </script>
 
 <template>
   <div class="area-result">
-    <h3 class="area-name">■ {{ area.areaName }}</h3>
+    <h3 class="area-name">■ {{ localizeAreaName(area.areaName, locale) }}</h3>
 
     <div v-if="area.groups.length === 0" class="no-result">
-      なし（このエリアでは目的の基質は入手できません）
+      {{ t("areaNoResult") }}
     </div>
 
     <PatternGroup

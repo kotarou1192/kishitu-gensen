@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
+import { useI18n } from "../composables/useI18n";
 
 interface Commit {
   hash: string;
@@ -20,6 +21,7 @@ const changelog = ref<Changelog | null>(null);
 const loading = ref(true);
 const error = ref(false);
 const isExpanded = ref(false);
+const { t } = useI18n();
 
 const toggleExpanded = () => {
   isExpanded.value = !isExpanded.value;
@@ -27,11 +29,11 @@ const toggleExpanded = () => {
 
 onMounted(async () => {
   try {
-    const response = await fetch('/kishitu-gensen/changelog.json');
-    if (!response.ok) throw new Error('Failed to fetch changelog');
+    const response = await fetch("/kishitu-gensen/changelog.json");
+    if (!response.ok) throw new Error("Failed to fetch changelog");
     changelog.value = await response.json();
   } catch (e) {
-    console.error('Failed to load changelog:', e);
+    console.error("Failed to load changelog:", e);
     error.value = true;
   } finally {
     loading.value = false;
@@ -42,42 +44,54 @@ onMounted(async () => {
 <template>
   <div class="changelog-section">
     <div class="changelog-header" @click="toggleExpanded">
-      <h3>📝 最近の更新</h3>
+      <h3>{{ t("changelogTitle") }}</h3>
       <span class="toggle-icon" :class="{ expanded: isExpanded }">▼</span>
     </div>
-    
+
     <div v-if="isExpanded" class="changelog-content">
-      <div v-if="loading" class="loading">読み込み中...</div>
-      
+      <div v-if="loading" class="loading">{{ t("changelogLoading") }}</div>
+
       <div v-else-if="error" class="error-message">
-        更新履歴の読み込みに失敗しました
+        {{ t("changelogLoadFailed") }}
       </div>
-      
-      <div v-else-if="changelog && changelog.commits.length > 0" class="commits-list">
-        <div v-for="commit in changelog.commits" :key="commit.hash" class="commit-item">
+
+      <div
+        v-else-if="changelog && changelog.commits.length > 0"
+        class="commits-list"
+      >
+        <div
+          v-for="commit in changelog.commits"
+          :key="commit.hash"
+          class="commit-item"
+        >
           <div class="commit-header">
-            <a :href="commit.url" target="_blank" rel="noopener noreferrer" class="commit-hash">
+            <a
+              :href="commit.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="commit-hash"
+            >
               {{ commit.shortHash }}
             </a>
             <span class="commit-date">{{ commit.date }}</span>
           </div>
           <div class="commit-message">{{ commit.message }}</div>
         </div>
-        
+
         <div class="view-all">
-          <a 
-            href="https://github.com/kotarou1192/kishitu-gensen/commits/main" 
-            target="_blank" 
+          <a
+            href="https://github.com/kotarou1192/kishitu-gensen/commits/main"
+            target="_blank"
             rel="noopener noreferrer"
             class="view-all-link"
           >
-            すべての更新履歴を見る →
+            {{ t("changelogViewAll") }}
           </a>
         </div>
       </div>
-      
+
       <div v-else class="no-commits">
-        更新履歴がありません
+        {{ t("changelogEmpty") }}
       </div>
     </div>
   </div>
@@ -137,7 +151,9 @@ onMounted(async () => {
   }
 }
 
-.loading, .error-message, .no-commits {
+.loading,
+.error-message,
+.no-commits {
   color: #888;
   padding: 1rem;
   text-align: center;
@@ -225,11 +241,11 @@ onMounted(async () => {
   .changelog-header {
     padding: 1rem;
   }
-  
+
   .changelog-content {
     padding: 0 1rem 1rem;
   }
-  
+
   .commit-header {
     flex-direction: column;
     align-items: flex-start;

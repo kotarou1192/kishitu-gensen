@@ -1,72 +1,114 @@
 <script setup lang="ts">
+import { localizeEffectName } from "../lib/i18n";
+import { useI18n } from "../composables/useI18n";
+import type {
+  AdditionalEffect,
+  BaseEffect,
+  SkillEffect,
+} from "../lib/constants/dropEffects";
+
 interface Props {
-  allBaseEffects: string[];
-  allAdditionalEffects: string[];
-  allSkillEffects: string[];
-  selectedBase: string;
-  selectedAdditional: string;
-  selectedSkill: string;
+  allBaseEffects: BaseEffect[];
+  allAdditionalEffects: AdditionalEffect[];
+  allSkillEffects: SkillEffect[];
+  selectedBase: BaseEffect;
+  selectedAdditional: AdditionalEffect;
+  selectedSkill: SkillEffect;
 }
 
 interface Emits {
-  (e: 'update:selectedBase', value: string): void;
-  (e: 'update:selectedAdditional', value: string): void;
-  (e: 'update:selectedSkill', value: string): void;
-  (e: 'calculate'): void;
+  (e: "update:selectedBase", value: BaseEffect): void;
+  (e: "update:selectedAdditional", value: AdditionalEffect): void;
+  (e: "update:selectedSkill", value: SkillEffect): void;
+  (e: "calculate"): void;
 }
 
 defineProps<Props>();
 const emit = defineEmits<Emits>();
+const { locale, t } = useI18n();
 </script>
 
 <template>
   <div class="input-section">
-    <h2>欲しい基質の効果を選択</h2>
+    <h2>{{ t("inputTitle") }}</h2>
     <div class="selectors">
       <div class="selector-group">
-        <label for="base" class="label-base">基礎効果：</label>
-        <select 
+        <label for="base" class="label-base">{{ t("inputBaseLabel") }}</label>
+        <select
           id="base"
           class="select-base"
           :value="selectedBase"
-          @change="emit('update:selectedBase', ($event.target as HTMLSelectElement).value)"
+          @change="
+            emit(
+              'update:selectedBase',
+              ($event.target as HTMLSelectElement).value as BaseEffect,
+            )
+          "
         >
-          <option v-for="effect in allBaseEffects" :key="effect" :value="effect">
-            {{ effect }}
+          <option
+            v-for="effect in allBaseEffects"
+            :key="effect"
+            :value="effect"
+          >
+            {{ localizeEffectName(effect, locale) }}
           </option>
         </select>
       </div>
 
       <div class="selector-group">
-        <label for="additional" class="label-additional">付加効果：</label>
-        <select 
+        <label for="additional" class="label-additional">{{
+          t("inputAdditionalLabel")
+        }}</label>
+        <select
           id="additional"
           class="select-additional"
           :value="selectedAdditional"
-          @change="emit('update:selectedAdditional', ($event.target as HTMLSelectElement).value)"
+          @change="
+            emit(
+              'update:selectedAdditional',
+              ($event.target as HTMLSelectElement).value as AdditionalEffect,
+            )
+          "
         >
-          <option v-for="effect in allAdditionalEffects" :key="effect" :value="effect">
-            {{ effect }}
+          <option
+            v-for="effect in allAdditionalEffects"
+            :key="effect"
+            :value="effect"
+          >
+            {{ localizeEffectName(effect, locale) }}
           </option>
         </select>
       </div>
 
       <div class="selector-group">
-        <label for="skill" class="label-skill">スキル効果：</label>
-        <select 
+        <label for="skill" class="label-skill">{{
+          t("inputSkillLabel")
+        }}</label>
+        <select
           id="skill"
           class="select-skill"
           :value="selectedSkill"
-          @change="emit('update:selectedSkill', ($event.target as HTMLSelectElement).value)"
+          @change="
+            emit(
+              'update:selectedSkill',
+              ($event.target as HTMLSelectElement).value as SkillEffect,
+            )
+          "
         >
-          <option v-for="effect in allSkillEffects" :key="effect" :value="effect">
-            {{ effect }}
+          <option
+            v-for="effect in allSkillEffects"
+            :key="effect"
+            :value="effect"
+          >
+            {{ localizeEffectName(effect, locale) }}
           </option>
         </select>
       </div>
     </div>
 
-    <button @click="emit('calculate')" class="calc-button">厳選パターンを計算</button>
+    <button @click="emit('calculate')" class="calc-button">
+      {{ t("inputCalculate") }}
+    </button>
   </div>
 </template>
 

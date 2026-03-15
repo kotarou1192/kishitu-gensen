@@ -1,12 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import InputSection from './components/InputSection.vue';
-import ResultsSection from './components/ResultsSection.vue';
-import DescriptionBox from './components/DescriptionBox.vue';
-import ChangelogSection from './components/ChangelogSection.vue';
-import HistorySection from './components/HistorySection.vue';
-import { useKishitsuCalculation } from './composables/useKishitsuCalculation';
-import type { HistoryItem } from './composables/useCalculationHistory';
+import { ref } from "vue";
+import InputSection from "./components/InputSection.vue";
+import ResultsSection from "./components/ResultsSection.vue";
+import DescriptionBox from "./components/DescriptionBox.vue";
+import ChangelogSection from "./components/ChangelogSection.vue";
+import HistorySection from "./components/HistorySection.vue";
+import { useKishitsuCalculation } from "./composables/useKishitsuCalculation";
+import type { HistoryItem } from "./composables/useCalculationHistory";
+import { useI18n } from "./composables/useI18n";
+import type { Locale } from "./lib/i18n";
+import type {
+  AdditionalEffect,
+  BaseEffect,
+  SkillEffect,
+} from "./lib/constants/dropEffects";
 
 const {
   allBaseEffects,
@@ -17,8 +24,9 @@ const {
   selectedSkill,
   result,
   error,
-  calculate
+  calculate,
 } = useKishitsuCalculation();
+const { locale, setLocale, t } = useI18n();
 
 const copySuccess = ref(false);
 
@@ -30,23 +38,46 @@ const handleSelectHistory = (item: HistoryItem) => {
   calculate();
   // 計算結果セクションにスムーズスクロール
   setTimeout(() => {
-    const resultsElement = document.querySelector('.results-section');
+    const resultsElement = document.querySelector(".results-section");
     if (resultsElement) {
-      resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      resultsElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, 100);
 };
 
 const shareToX = () => {
-  const text = 'アークナイツ：エンドフィールド 基質厳選ツール';
+  const text = t("appTitle");
   const url = window.location.href;
-  const hashtags = 'エンドフィールド';
-  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent(hashtags)}`, '_blank');
+  const hashtags = locale.value === "ja" ? "エンドフィールド" : "Endfield";
+  window.open(
+    `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent(hashtags)}`,
+    "_blank",
+  );
 };
 
 const shareToBluesky = () => {
-  const text = `アークナイツ：エンドフィールド 基質厳選ツール\n${window.location.href}\n\n#エンドフィールド`;
-  window.open(`https://bsky.app/intent/compose?text=${encodeURIComponent(text)}`, '_blank');
+  const hashTag = locale.value === "ja" ? "#エンドフィールド" : "#Endfield";
+  const text = `${t("appTitle")}\n${window.location.href}\n\n${hashTag}`;
+  window.open(
+    `https://bsky.app/intent/compose?text=${encodeURIComponent(text)}`,
+    "_blank",
+  );
+};
+
+const handleLocaleChange = (next: Locale) => {
+  setLocale(next);
+};
+
+const handleSelectedBaseUpdate = (value: BaseEffect) => {
+  selectedBase.value = value;
+};
+
+const handleSelectedAdditionalUpdate = (value: AdditionalEffect) => {
+  selectedAdditional.value = value;
+};
+
+const handleSelectedSkillUpdate = (value: SkillEffect) => {
+  selectedSkill.value = value;
 };
 
 const copyLink = async () => {
@@ -57,7 +88,7 @@ const copyLink = async () => {
       copySuccess.value = false;
     }, 2000);
   } catch (err) {
-    console.error('コピーに失敗しました:', err);
+    console.error("コピーに失敗しました:", err);
   }
 };
 </script>
@@ -65,8 +96,25 @@ const copyLink = async () => {
 <template>
   <div class="container">
     <header>
-      <h1>🎮 基質厳選ツール</h1>
-      <p class="subtitle">アークナイツ：エンドフィールド - 基質（武器）厳選補助</p>
+      <h1>{{ t("appTitle") }}</h1>
+      <p class="subtitle">{{ t("appSubtitle") }}</p>
+      <div class="language-switcher">
+        <span class="language-label">{{ t("appLanguage") }}:</span>
+        <button
+          class="lang-button"
+          :class="{ active: locale === 'ja' }"
+          @click="handleLocaleChange('ja')"
+        >
+          日本語
+        </button>
+        <button
+          class="lang-button"
+          :class="{ active: locale === 'en' }"
+          @click="handleLocaleChange('en')"
+        >
+          English
+        </button>
+      </div>
     </header>
 
     <DescriptionBox />
@@ -78,60 +126,106 @@ const copyLink = async () => {
       :selected-base="selectedBase"
       :selected-additional="selectedAdditional"
       :selected-skill="selectedSkill"
-      @update:selected-base="selectedBase = $event"
-      @update:selected-additional="selectedAdditional = $event"
-      @update:selected-skill="selectedSkill = $event"
+      @update:selected-base="handleSelectedBaseUpdate"
+      @update:selected-additional="handleSelectedAdditionalUpdate"
+      @update:selected-skill="handleSelectedSkillUpdate"
       @calculate="calculate"
     />
 
     <HistorySection @select-history="handleSelectHistory" />
 
-    <div v-if="error" class="error-message">
-      ⚠️ {{ error }}
-    </div>
+    <div v-if="error" class="error-message">⚠️ {{ error }}</div>
 
     <ResultsSection v-if="result" :result="result" />
 
     <ChangelogSection />
 
     <footer class="footer">
-      <p>使いやすかったらシェアしてくださると励みになります 😊</p>
-      
+      <p>{{ t("appSharePrompt") }}</p>
+
       <div class="share-buttons">
         <button @click="shareToX" class="share-button x-button">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+            />
           </svg>
-          Xでシェア
+          {{ t("appShareX") }}
         </button>
-        
+
         <button @click="shareToBluesky" class="share-button bluesky-button">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"
+            />
           </svg>
-          Blueskyでシェア
+          {{ t("appShareBluesky") }}
         </button>
-        
-        <button @click="copyLink" class="share-button copy-button" :class="{ copied: copySuccess }">
-          <svg v-if="!copySuccess" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+        <button
+          @click="copyLink"
+          class="share-button copy-button"
+          :class="{ copied: copySuccess }"
+        >
+          <svg
+            v-if="!copySuccess"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            <path
+              d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+            ></path>
           </svg>
-          <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
-          {{ copySuccess ? 'コピー完了！' : 'リンクをコピー' }}
+          {{ copySuccess ? t("appCopyDone") : t("appCopyLink") }}
         </button>
       </div>
 
       <p class="repo-link">
-        <a href="https://github.com/kotarou1192/kishitu-gensen" target="_blank" rel="noopener noreferrer">
-          GitHub リポジトリ
+        <a
+          href="https://github.com/kotarou1192/kishitu-gensen"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ t("appGithubRepo") }}
         </a>
       </p>
-      
+
       <p class="bug-report">
-        バグ報告や機能要望も歓迎します 🐛
+        {{ t("appBugReport") }}
       </p>
     </footer>
   </div>
@@ -153,6 +247,40 @@ header {
 .subtitle {
   color: #888;
   margin-top: 0.5rem;
+}
+
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.language-label {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.lang-button {
+  border: 1px solid rgba(100, 108, 255, 0.35);
+  background: transparent;
+  color: #888;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-button:hover {
+  border-color: #646cff;
+  color: #646cff;
+}
+
+.lang-button.active {
+  color: #fff;
+  background: #646cff;
+  border-color: #646cff;
 }
 
 .error-message {

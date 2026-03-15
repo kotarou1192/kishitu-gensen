@@ -1,3 +1,5 @@
+import type { AreaKey, DropEffectsI18n } from "./constants/dropEffects";
+
 export const uniq = <T>(arr: T[]): T[] => {
   return Array.from(new Set(arr));
 };
@@ -22,16 +24,16 @@ export const combinations = <T>(arr: T[], k: number): T[][] => {
 export const normalizeEffect = (
   group: string,
   raw: string,
-  dropEffects: any,
+  dropEffects: DropEffectsI18n,
 ) => {
   const key = String(raw).trim();
 
   // どこかで完全一致するならそれを優先（例外吸収）
-  for (const area of Object.keys(dropEffects)) {
-    const t = dropEffects[area];
-    if (t.base?.includes(key)) return key;
-    if (t.additional?.includes(key)) return key;
-    if (t.skill?.includes(key)) return key;
+  for (const areaKey of Object.keys(dropEffects) as AreaKey[]) {
+    const effects = dropEffects[areaKey].effects;
+    if (effects.base.some((effect) => effect.ja === key)) return key;
+    if (effects.additional.some((effect) => effect.ja === key)) return key;
+    if (effects.skill.some((effect) => effect.ja === key)) return key;
   }
 
   if (group === "基礎") return key.endsWith("UP") ? key : `${key}UP`;

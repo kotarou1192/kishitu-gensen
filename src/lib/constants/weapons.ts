@@ -2,7 +2,7 @@ import {
   type BaseEffect,
   type AdditionalEffect,
   type SkillEffect,
-} from "./dropEffects";
+} from "./dropEffects.ts";
 
 type Weapon = {
   rarity: 3 | 4 | 5 | 6;

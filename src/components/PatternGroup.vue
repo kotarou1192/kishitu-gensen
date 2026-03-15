@@ -2,6 +2,8 @@
 import RaritySection from "./RaritySection.vue";
 import type { PatternGroup } from "../types";
 import { computed, ref } from "vue";
+import { localizeEffectName } from "../lib/i18n";
+import { useI18n } from "../composables/useI18n";
 
 interface Props {
   group: PatternGroup;
@@ -12,18 +14,41 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const { locale, t } = useI18n();
 
 const weaponCountText = computed(() => {
   const counts: string[] = [];
   if (props.group.byRarity[6]?.length)
-    counts.push(`☆6: ${props.group.byRarity[6].length}個`);
+    counts.push(
+      t("patternCountFormat", {
+        rarity: 6,
+        count: props.group.byRarity[6].length,
+      }),
+    );
   if (props.group.byRarity[5]?.length)
-    counts.push(`☆5: ${props.group.byRarity[5].length}個`);
+    counts.push(
+      t("patternCountFormat", {
+        rarity: 5,
+        count: props.group.byRarity[5].length,
+      }),
+    );
   if (props.group.byRarity[4]?.length)
-    counts.push(`☆4: ${props.group.byRarity[4].length}個`);
+    counts.push(
+      t("patternCountFormat", {
+        rarity: 4,
+        count: props.group.byRarity[4].length,
+      }),
+    );
   if (props.group.byRarity.other?.length)
-    counts.push(`☆?: ${props.group.byRarity.other.length}個`);
-  return counts.length > 0 ? counts.join("、") : "武器なし";
+    counts.push(
+      t("patternCountFormat", {
+        rarity: "?",
+        count: props.group.byRarity.other.length,
+      }),
+    );
+  return counts.length > 0
+    ? counts.join(locale.value === "ja" ? "、" : ", ")
+    : t("patternWeaponsNone");
 });
 
 // エリア名とパターン番号からユニークIDを生成
@@ -52,14 +77,16 @@ const copyPatternLink = async () => {
   <div :id="patternId" class="pattern-group">
     <div class="pattern-header">
       <div class="header-left">
-        <h4 class="pattern-title">パターン {{ patternNumber }}</h4>
+        <h4 class="pattern-title">
+          {{ t("patternTitle", { number: patternNumber }) }}
+        </h4>
         <span class="weapon-count">{{ weaponCountText }}</span>
       </div>
       <button
         @click="copyPatternLink"
         class="copy-link-button"
         :class="{ copied: copySuccess }"
-        title="このパターンへのリンクをコピー"
+        :title="t('patternCopyLinkTitle')"
       >
         <svg
           v-if="!copySuccess"
@@ -103,10 +130,12 @@ const copyPatternLink = async () => {
           v-if="group.requiredBaseChoices.length > 0"
           class="required-choices"
         >
-          <strong class="label-base">基礎効果（必須選択）:</strong>
+          <strong class="label-base">{{ t("patternRequiredBase") }}</strong>
           <p class="required-list">
             <span class="effect-base">{{
-              group.requiredBaseChoices.join(", ")
+              group.requiredBaseChoices
+                .map((effect) => localizeEffectName(effect, locale))
+                .join(", ")
             }}</span>
           </p>
         </div>
@@ -115,29 +144,40 @@ const copyPatternLink = async () => {
       <div class="lock-info">
         <div v-if="group.mode === '付加固定'">
           <div class="required-choices required-additional">
-            <strong class="label-additional">付加効果（必須選択）:</strong>
+            <strong class="label-additional">{{
+              t("patternRequiredAdditional")
+            }}</strong>
             <p class="required-list">
               <span class="effect-additional">{{
-                group.lockedAdditional
+                localizeEffectName(group.lockedAdditional || "", locale)
               }}</span>
             </p>
           </div>
           <p class="random-note">
-            <strong class="label-skill">スキル効果（ランダム）:</strong>
-            希望した効果: <span class="effect-skill">{{ wantedSkill }}</span>
+            <strong class="label-skill">{{ t("patternRandomSkill") }}</strong>
+            {{ t("patternDesiredEffect") }}
+            <span class="effect-skill">{{
+              localizeEffectName(wantedSkill, locale)
+            }}</span>
           </p>
         </div>
         <div v-else>
           <div class="required-choices required-skill">
-            <strong class="label-skill">スキル効果（必須選択）:</strong>
+            <strong class="label-skill">{{ t("patternRequiredSkill") }}</strong>
             <p class="required-list">
-              <span class="effect-skill">{{ group.lockedSkill }}</span>
+              <span class="effect-skill">{{
+                localizeEffectName(group.lockedSkill || "", locale)
+              }}</span>
             </p>
           </div>
           <p class="random-note">
-            <strong class="label-additional">付加効果（ランダム）:</strong>
-            希望した効果:
-            <span class="effect-additional">{{ wantedAdditional }}</span>
+            <strong class="label-additional">{{
+              t("patternRandomAdditional")
+            }}</strong>
+            {{ t("patternDesiredEffect") }}
+            <span class="effect-additional">{{
+              localizeEffectName(wantedAdditional, locale)
+            }}</span>
           </p>
         </div>
       </div>

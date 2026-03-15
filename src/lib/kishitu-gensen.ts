@@ -1,16 +1,61 @@
-import { DROP_EFFECTS } from "./constants/dropEffects";
+import {
+  DROP_EFFECTS,
+  type AreaKey,
+  type DropEffectI18n,
+  type DropEffectsI18n,
+} from "./constants/dropEffects";
 import { WEAPONS } from "./constants/weapons";
 import { uniq, combinations, normalizeEffect } from "./utils";
+
+type AreaEffectPools = {
+  base: string[];
+  additional: string[];
+  skill: string[];
+};
+
+type RunErrorCode =
+  | "invalid_input_count"
+  | "invalid_item"
+  | "invalid_group"
+  | "invalid_group_count";
+
+type ParseErrorResult = {
+  error: string;
+  errorCode: RunErrorCode;
+  errorItem?: string;
+};
+
+type ParseSuccessResult = {
+  wanted: {
+    base: string | null;
+    additional: string | null;
+    skill: string | null;
+  };
+};
+
+type ParseResult = ParseErrorResult | ParseSuccessResult;
+
+const toJaPools = (areaEffects: DropEffectI18n): AreaEffectPools => {
+  return {
+    base: areaEffects.base.map((effect) => effect.ja),
+    additional: areaEffects.additional.map((effect) => effect.ja),
+    skill: areaEffects.skill.map((effect) => effect.ja),
+  };
+};
 
 // ==============================
 // input[0] = ['基礎：知性', '付加：攻撃力', 'スキル：夜幕'] 固定
 // ==============================
-const parseWantedTriple = (input: any, dropEffects: any) => {
+const parseWantedTriple = (
+  input: string[],
+  dropEffects: DropEffectsI18n,
+): ParseResult => {
   const rows = input;
   if (!Array.isArray(rows) || rows.length !== 3) {
     return {
       error:
         "入力が不正です（基礎/付加/スキルを各1つずつ、合計3つ入力してください）",
+      errorCode: "invalid_input_count",
     };
   }
 
@@ -26,9 +71,19 @@ const parseWantedTriple = (input: any, dropEffects: any) => {
     const [group, raw]: ["基礎" | "付加" | "スキル", string] = item.split(
       "：",
     ) as ["基礎" | "付加" | "スキル", string];
-    if (!group || !raw) return { error: `入力が不正です: ${item}` };
+    if (!group || !raw) {
+      return {
+        error: `入力が不正です: ${item}`,
+        errorCode: "invalid_item",
+        errorItem: item,
+      };
+    }
     if (!["基礎", "付加", "スキル"].includes(group)) {
-      return { error: `入力が不正です（基礎/付加/スキルのみ）: ${item}` };
+      return {
+        error: `入力が不正です（基礎/付加/スキルのみ）: ${item}`,
+        errorCode: "invalid_group",
+        errorItem: item,
+      };
     }
 
     seen[group] += 1;
@@ -40,7 +95,10 @@ const parseWantedTriple = (input: any, dropEffects: any) => {
   }
 
   if (seen["基礎"] !== 1 || seen["付加"] !== 1 || seen["スキル"] !== 1) {
-    return { error: "入力が不正です（基礎/付加/スキルが各1つずつ必要です）" };
+    return {
+      error: "入力が不正です（基礎/付加/スキルが各1つずつ必要です）",
+      errorCode: "invalid_group_count",
+    };
   }
 
   return { wanted: out };
@@ -52,10 +110,13 @@ const parseWantedTriple = (input: any, dropEffects: any) => {
 // - base: 3種類（その中からランダムで武器baseが決まる）
 // - additional or skill: どちらか1種類を固定
 // ==============================
-const enumerateValidLockPatternsForArea = (areaTable: any, wanted: any) => {
-  const basePool = uniq(areaTable.base || []);
-  const addPool = uniq(areaTable.additional || []);
-  const skillPool = uniq(areaTable.skill || []);
+const enumerateValidLockPatternsForArea = (
+  areaPools: AreaEffectPools,
+  wanted: any,
+) => {
+  const basePool = uniq(areaPools.base || []);
+  const addPool = uniq(areaPools.additional || []);
+  const skillPool = uniq(areaPools.skill || []);
 
   // 欲しいbaseがそもそも出ないなら終了
   if (!basePool.includes(wanted.base)) return [];
@@ -104,9 +165,12 @@ const enumerateValidLockPatternsForArea = (areaTable: any, wanted: any) => {
 // - スキル固定なら weapon.skill == lockedSkill
 // - ランダム側の値がエリアpoolに含まれる（念のため）
 // ==============================
-const weaponsPossibleUnderPattern = (areaTable: any, pattern: any) => {
-  const addPool = new Set(areaTable.additional || []);
-  const skillPool = new Set(areaTable.skill || []);
+const weaponsPossibleUnderPattern = (
+  areaPools: AreaEffectPools,
+  pattern: any,
+) => {
+  const addPool = new Set(areaPools.additional || []);
+  const skillPool = new Set(areaPools.skill || []);
   const baseSet = new Set(pattern.baseChoices);
 
   return WEAPONS.filter((w) => {
@@ -135,12 +199,12 @@ const weaponsPossibleUnderPattern = (areaTable: any, pattern: any) => {
 // - 同一エリア・同一モードで、武器集合が同じパターンはまとめる
 // - まとめたものは baseChoices を候補として列挙（同一武器集合に対し複数base3があり得るため）
 // ==============================
-const consolidatePatterns = (areaTable: any, patterns: any) => {
+const consolidatePatterns = (areaPools: AreaEffectPools, patterns: any) => {
   // key = mode + weaponNames signature
   const map = new Map();
 
   for (const p of patterns) {
-    const ws = weaponsPossibleUnderPattern(areaTable, p);
+    const ws = weaponsPossibleUnderPattern(areaPools, p);
     if (ws.length === 0) continue;
 
     const names = uniq(ws.map((x) => x.name)).sort();
@@ -269,7 +333,13 @@ const formatArea = (areaName: string, wanted: any, groups: any) => {
 // ==============================
 const run = (input: string[]) => {
   const parsed = parseWantedTriple(input, DROP_EFFECTS);
-  if (parsed.error) return { error: parsed.error };
+  if ("error" in parsed) {
+    return {
+      error: parsed.error,
+      errorCode: parsed.errorCode,
+      errorItem: parsed.errorItem,
+    };
+  }
 
   const wanted = parsed.wanted;
 
@@ -281,12 +351,12 @@ const run = (input: string[]) => {
   textLines.push(`  スキル: ${wanted?.skill}`);
   textLines.push("");
 
-  for (const areaName of Object.keys(
-    DROP_EFFECTS,
-  ) as (keyof typeof DROP_EFFECTS)[]) {
-    const table = DROP_EFFECTS[areaName];
-    const patterns = enumerateValidLockPatternsForArea(table, wanted);
-    const groups = consolidatePatterns(table, patterns);
+  for (const areaKey of Object.keys(DROP_EFFECTS) as AreaKey[]) {
+    const table = DROP_EFFECTS[areaKey];
+    const areaPools = toJaPools(table.effects);
+    const patterns = enumerateValidLockPatternsForArea(areaPools, wanted);
+    const groups = consolidatePatterns(areaPools, patterns);
+    const areaName = table.area.ja;
 
     results.push({ areaName, groups });
     textLines.push(formatArea(areaName, wanted, groups));

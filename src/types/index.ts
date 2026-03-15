@@ -32,4 +32,10 @@ export interface CalculationResult {
   wanted: WantedEffects;
   results: AreaResult[];
   error?: string;
+  errorCode?:
+    | "invalid_input_count"
+    | "invalid_item"
+    | "invalid_group"
+    | "invalid_group_count";
+  errorItem?: string;
 }

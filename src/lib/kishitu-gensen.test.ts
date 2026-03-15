@@ -113,7 +113,9 @@ describe("kishitu-gensen - run 関数", () => {
     expect(result.results).toBeDefined();
 
     const areaNames = result.results?.map((r) => r.areaName) || [];
-    const expectedAreas = Object.keys(DROP_EFFECTS);
+    const expectedAreas = Object.values(DROP_EFFECTS).map(
+      (area) => area.area.ja,
+    );
 
     expect(areaNames.sort()).toEqual(expectedAreas.sort());
   });
@@ -125,7 +127,9 @@ describe("kishitu-gensen - run 関数", () => {
     expect(result.error).toBeUndefined();
     expect(result.text).toBeDefined();
 
-    for (const areaName of Object.keys(DROP_EFFECTS)) {
+    for (const areaName of Object.values(DROP_EFFECTS).map(
+      (area) => area.area.ja,
+    )) {
       expect(result.text).toContain(areaName);
     }
   });
@@ -133,27 +137,32 @@ describe("kishitu-gensen - run 関数", () => {
 
 describe("DROP_EFFECTS", () => {
   it("全エリアが定義されている", () => {
-    expect(DROP_EFFECTS).toHaveProperty("中枢エリア");
-    expect(DROP_EFFECTS).toHaveProperty("源石研究パーク");
-    expect(DROP_EFFECTS).toHaveProperty("鉱山エリア");
-    expect(DROP_EFFECTS).toHaveProperty("エネルギー高地");
-    expect(DROP_EFFECTS).toHaveProperty("武陵城");
+    expect(DROP_EFFECTS).toHaveProperty("central_area");
+    expect(DROP_EFFECTS).toHaveProperty("originium_park");
+    expect(DROP_EFFECTS).toHaveProperty("mine_area");
+    expect(DROP_EFFECTS).toHaveProperty("energy_highland");
+    expect(DROP_EFFECTS).toHaveProperty("wuling_city");
+    expect(DROP_EFFECTS).toHaveProperty("qingbo_fort");
   });
 
-  it("各エリアにbase, additional, skillプロパティがある", () => {
+  it("各エリアにarea/effectsとbase, additional, skillプロパティがある", () => {
     for (const area of Object.values(DROP_EFFECTS)) {
-      expect(area).toHaveProperty("base");
-      expect(area).toHaveProperty("additional");
-      expect(area).toHaveProperty("skill");
-      expect(Array.isArray(area.base)).toBe(true);
-      expect(Array.isArray(area.additional)).toBe(true);
-      expect(Array.isArray(area.skill)).toBe(true);
+      expect(area).toHaveProperty("area");
+      expect(area).toHaveProperty("effects");
+      expect(area.effects).toHaveProperty("base");
+      expect(area.effects).toHaveProperty("additional");
+      expect(area.effects).toHaveProperty("skill");
+      expect(Array.isArray(area.effects.base)).toBe(true);
+      expect(Array.isArray(area.effects.additional)).toBe(true);
+      expect(Array.isArray(area.effects.skill)).toBe(true);
     }
   });
 
   it("全エリアにメイン能力UPが含まれる", () => {
     for (const area of Object.values(DROP_EFFECTS)) {
-      expect(area.base).toContain("メイン能力UP");
+      expect(
+        area.effects.base.some((effect) => effect.ja === "メイン能力UP"),
+      ).toBe(true);
     }
   });
 
@@ -161,7 +170,9 @@ describe("DROP_EFFECTS", () => {
     const basicStats = ["敏捷UP", "筋力UP", "意志UP", "知性UP"];
     for (const area of Object.values(DROP_EFFECTS)) {
       for (const stat of basicStats) {
-        expect(area.base).toContain(stat);
+        expect(area.effects.base.some((effect) => effect.ja === stat)).toBe(
+          true,
+        );
       }
     }
   });

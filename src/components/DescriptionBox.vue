@@ -1,11 +1,17 @@
+<script setup lang="ts">
+import { useI18n } from "../composables/useI18n";
+
+const { t } = useI18n();
+</script>
+
 <template>
   <div class="description-box">
     <p class="description-text">
-      このツールは、欲しい基質を選択すると、一緒に狙える基質を超域活性点ごとに全パターン表示します。
+      {{ t("descriptionLine1") }}
     </p>
-    
+
     <p class="description-text">
-      武器及び超域活性点は2026/02/17時点のデータです。
+      {{ t("descriptionLine2") }}
     </p>
   </div>
 </template>

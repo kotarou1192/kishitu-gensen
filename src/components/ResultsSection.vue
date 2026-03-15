@@ -1,22 +1,42 @@
 <script setup lang="ts">
-import AreaResult from './AreaResult.vue';
-import type { CalculationResult } from '../types';
+import AreaResult from "./AreaResult.vue";
+import type { CalculationResult } from "../types";
+import { localizeEffectName } from "../lib/i18n";
+import { useI18n } from "../composables/useI18n";
 
 interface Props {
   result: CalculationResult;
 }
 
 defineProps<Props>();
+const { locale, t } = useI18n();
 </script>
 
 <template>
   <div class="results-section">
     <div class="selected-info">
-      <h3>選択された基質効果</h3>
+      <h3>{{ t("resultsSelectedTitle") }}</h3>
       <ul>
-        <li><strong class="label-base">基礎効果：</strong><span class="effect-base">{{ result.wanted.base }}</span></li>
-        <li><strong class="label-additional">付加効果：</strong><span class="effect-additional">{{ result.wanted.additional }}</span></li>
-        <li><strong class="label-skill">スキル効果：</strong><span class="effect-skill">{{ result.wanted.skill }}</span></li>
+        <li>
+          <strong class="label-base">{{ t("resultsBaseLabel") }}</strong
+          ><span class="effect-base">{{
+            localizeEffectName(result.wanted.base, locale)
+          }}</span>
+        </li>
+        <li>
+          <strong class="label-additional">{{
+            t("resultsAdditionalLabel")
+          }}</strong
+          ><span class="effect-additional">{{
+            localizeEffectName(result.wanted.additional, locale)
+          }}</span>
+        </li>
+        <li>
+          <strong class="label-skill">{{ t("resultsSkillLabel") }}</strong
+          ><span class="effect-skill">{{
+            localizeEffectName(result.wanted.skill, locale)
+          }}</span>
+        </li>
       </ul>
     </div>
 

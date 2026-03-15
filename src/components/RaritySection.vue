@@ -1,25 +1,28 @@
 <script setup lang="ts">
-import { useWeaponCollection } from '../composables/useWeaponCollection';
+import { useWeaponCollection } from "../composables/useWeaponCollection";
+import { localizeEffectName } from "../lib/i18n";
+import { useI18n } from "../composables/useI18n";
 
 interface Props {
-  rarity: number | 'other';
+  rarity: number | "other";
   weapons: string[];
 }
 
 defineProps<Props>();
 
 const { isCollected, toggleCollected } = useWeaponCollection();
+const { locale, t } = useI18n();
 
-const rarityLabel = (rarity: number | 'other') => {
-  if (rarity === 'other') return '⭐?';
+const rarityLabel = (rarity: number | "other") => {
+  if (rarity === "other") return "⭐?";
   return `⭐${rarity}`;
 };
 
-const rarityClass = (rarity: number | 'other') => {
-  if (typeof rarity === 'number') {
+const rarityClass = (rarity: number | "other") => {
+  if (typeof rarity === "number") {
     return `rarity-${rarity}`;
   }
-  return '';
+  return "";
 };
 
 // 武器名をパースして名前と効果に分ける
@@ -40,25 +43,53 @@ const parseWeaponName = (weaponText: string) => {
 </script>
 
 <template>
-  <div v-if="weapons.length" class="rarity-section" :class="rarityClass(rarity)">
+  <div
+    v-if="weapons.length"
+    class="rarity-section"
+    :class="rarityClass(rarity)"
+  >
     <h5>{{ rarityLabel(rarity) }}</h5>
     <ul>
       <li v-for="(weapon, i) in weapons" :key="i" class="weapon-item">
         <div class="weapon-row">
-          <span class="weapon-content" :class="{ collected: isCollected(parseWeaponName(weapon).name) }">
+          <span
+            class="weapon-content"
+            :class="{ collected: isCollected(parseWeaponName(weapon).name) }"
+          >
             <template v-if="parseWeaponName(weapon).base !== null">
-              {{ parseWeaponName(weapon).name }}（<span class="effect-base">{{ parseWeaponName(weapon).base }}</span>, <span class="effect-additional">{{ parseWeaponName(weapon).additional }}</span>, <span class="effect-skill">{{ parseWeaponName(weapon).skill }}</span>）
+              {{ parseWeaponName(weapon).name }}（<span class="effect-base">{{
+                localizeEffectName(String(parseWeaponName(weapon).base), locale)
+              }}</span
+              >,
+              <span class="effect-additional">{{
+                localizeEffectName(
+                  String(parseWeaponName(weapon).additional),
+                  locale,
+                )
+              }}</span
+              >,
+              <span class="effect-skill">{{
+                localizeEffectName(
+                  String(parseWeaponName(weapon).skill),
+                  locale,
+                )
+              }}</span
+              >）
             </template>
             <template v-else>
               {{ weapon }}
             </template>
           </span>
-          <button 
+          <button
             @click="toggleCollected(parseWeaponName(weapon).name)"
             class="collection-badge"
             :class="{ collected: isCollected(parseWeaponName(weapon).name) }"
           >
-            {{ isCollected(parseWeaponName(weapon).name) ? '入手済み' : '未入手' }}
+            {{
+              isCollected(parseWeaponName(weapon).name)
+                ? t("rarityCollected")
+                : t("rarityUncollected")
+            }}
           </button>
         </div>
       </li>

@@ -1,26 +1,35 @@
 <template>
   <section class="history-section">
     <div class="history-header">
-      <h2>計算履歴</h2>
+      <h2>{{ t("historyTitle") }}</h2>
       <div class="header-buttons">
-        <button 
+        <button
           v-if="history.length > 0"
-          @click="showFavoritesOnly = !showFavoritesOnly" 
+          @click="showFavoritesOnly = !showFavoritesOnly"
           class="filter-button"
           :class="{ active: showFavoritesOnly }"
         >
-          ☆ {{ showFavoritesOnly ? 'すべて表示' : 'お気に入りのみ' }}
+          ☆
+          {{
+            showFavoritesOnly
+              ? t("historyFilterAll")
+              : t("historyFilterFavorites")
+          }}
         </button>
-        <button v-if="history.length > 0" @click="clearHistory" class="clear-button">
-          すべて削除
+        <button
+          v-if="history.length > 0"
+          @click="clearHistory"
+          class="clear-button"
+        >
+          {{ t("historyClearAll") }}
         </button>
       </div>
     </div>
     <div v-if="history.length === 0" class="empty-message">
-      計算履歴はまだありません
+      {{ t("historyEmpty") }}
     </div>
     <div v-else-if="filteredHistory.length === 0" class="empty-message">
-      お気に入りの履歴はまだありません
+      {{ t("historyEmptyFavorites") }}
     </div>
     <div v-else class="history-list">
       <div
@@ -32,22 +41,28 @@
           @click.stop="toggleFavorite(history.indexOf(item))"
           class="favorite-button"
           :class="{ active: item.isFavorite }"
-          title="お気に入り"
+          :title="t('historyFavoriteTitle')"
         >
           ☆
         </button>
         <div class="history-content" @click="$emit('selectHistory', item)">
           <div class="history-effects">
-            <span class="effect-badge effect-base">{{ item.base }}</span>
-            <span class="effect-badge effect-additional">{{ item.additional }}</span>
-            <span class="effect-badge effect-skill">{{ item.skill }}</span>
+            <span class="effect-badge effect-base">{{
+              localizeEffectName(item.base, locale)
+            }}</span>
+            <span class="effect-badge effect-additional">{{
+              localizeEffectName(item.additional, locale)
+            }}</span>
+            <span class="effect-badge effect-skill">{{
+              localizeEffectName(item.skill, locale)
+            }}</span>
           </div>
           <div class="history-time">{{ formatTime(item.timestamp) }}</div>
         </div>
         <button
           @click.stop="removeFromHistory(history.indexOf(item))"
           class="delete-button"
-          title="削除"
+          :title="t('historyDeleteTitle')"
         >
           ×
         </button>
@@ -58,13 +73,20 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useCalculationHistory, type HistoryItem } from "../composables/useCalculationHistory";
+import {
+  useCalculationHistory,
+  type HistoryItem,
+} from "../composables/useCalculationHistory";
+import { useI18n } from "../composables/useI18n";
+import { localizeEffectName } from "../lib/i18n";
 
 defineEmits<{
   selectHistory: [item: HistoryItem];
 }>();
 
-const { history, removeFromHistory, clearHistory, toggleFavorite } = useCalculationHistory();
+const { history, removeFromHistory, clearHistory, toggleFavorite } =
+  useCalculationHistory();
+const { locale, t } = useI18n();
 
 // お気に入りのみ表示するフィルター
 const showFavoritesOnly = ref(false);
@@ -72,7 +94,7 @@ const showFavoritesOnly = ref(false);
 // フィルタリングされた履歴
 const filteredHistory = computed(() => {
   if (showFavoritesOnly.value) {
-    return history.value.filter(item => item.isFavorite);
+    return history.value.filter((item) => item.isFavorite);
   }
   return history.value;
 });
@@ -85,17 +107,19 @@ const formatTime = (timestamp: number) => {
   // 1時間以内
   if (diff < 60 * 60 * 1000) {
     const minutes = Math.floor(diff / (60 * 1000));
-    return minutes === 0 ? "たった今" : `${minutes}分前`;
+    return minutes === 0
+      ? t("historyJustNow")
+      : t("historyMinutesAgo", { minutes });
   }
 
   // 24時間以内
   if (diff < 24 * 60 * 60 * 1000) {
     const hours = Math.floor(diff / (60 * 60 * 1000));
-    return `${hours}時間前`;
+    return t("historyHoursAgo", { hours });
   }
 
   // それ以降は日付表示
-  return date.toLocaleDateString("ja-JP", {
+  return date.toLocaleDateString(locale.value === "ja" ? "ja-JP" : "en-US", {
     month: "short",
     day: "numeric",
     hour: "2-digit",
