@@ -16,6 +16,18 @@ describe("kishitu-gensen - run 関数", () => {
     expect(Array.isArray(result.results)).toBe(true);
   });
 
+  it("英語ロケールで text 出力を英語化できる", () => {
+    const input = ["基礎：知性", "付加：攻撃力", "スキル：夜幕"];
+    const result = run(input, "en");
+
+    expect(result.error).toBeUndefined();
+    expect(result.text).toContain("Desired drop (fixed input):");
+    expect(result.text).toContain("Base: Intelligence UP");
+    expect(result.text).toContain("Additional: Attack UP");
+    expect(result.text).toContain("Skill: Nightfall");
+    expect(result.text).toContain("Central Area");
+  });
+
   it("入力が3つでない場合はエラーを返す", () => {
     const input = ["基礎：知性", "付加：攻撃力"];
     const result = run(input);
@@ -23,6 +35,13 @@ describe("kishitu-gensen - run 関数", () => {
     expect(result.error).toBe(
       "入力が不正です（基礎/付加/スキルを各1つずつ、合計3つ入力してください）",
     );
+  });
+
+  it("英語ロケールでは入力エラー文言も英語になる", () => {
+    const input = ["基礎：知性", "付加：攻撃力"];
+    const result = run(input, "en");
+
+    expect(result.error).toContain("Invalid input");
   });
 
   it("基礎が2つある場合はエラーを返す", () => {

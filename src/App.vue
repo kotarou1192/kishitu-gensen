@@ -48,7 +48,7 @@ const handleSelectHistory = (item: HistoryItem) => {
 const shareToX = () => {
   const text = t("appTitle");
   const url = window.location.href;
-  const hashtags = locale.value === "ja" ? "エンドフィールド" : "Endfield";
+  const hashtags = t("appShareHashtag");
   window.open(
     `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=${encodeURIComponent(hashtags)}`,
     "_blank",
@@ -56,7 +56,7 @@ const shareToX = () => {
 };
 
 const shareToBluesky = () => {
-  const hashTag = locale.value === "ja" ? "#エンドフィールド" : "#Endfield";
+  const hashTag = `#${t("appShareHashtag")}`;
   const text = `${t("appTitle")}\n${window.location.href}\n\n${hashTag}`;
   window.open(
     `https://bsky.app/intent/compose?text=${encodeURIComponent(text)}`,
@@ -105,14 +105,14 @@ const copyLink = async () => {
           :class="{ active: locale === 'ja' }"
           @click="handleLocaleChange('ja')"
         >
-          日本語
+          {{ t("appLanguageJa") }}
         </button>
         <button
           class="lang-button"
           :class="{ active: locale === 'en' }"
           @click="handleLocaleChange('en')"
         >
-          English
+          {{ t("appLanguageEn") }}
         </button>
       </div>
     </header>

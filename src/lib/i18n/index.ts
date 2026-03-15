@@ -17,11 +17,14 @@ export const MESSAGES = {
     appSharePrompt: "使いやすかったらシェアしてくださると励みになります 😊",
     appShareX: "Xでシェア",
     appShareBluesky: "Blueskyでシェア",
+    appShareHashtag: "エンドフィールド",
     appCopyLink: "リンクをコピー",
     appCopyDone: "コピー完了！",
     appGithubRepo: "GitHub リポジトリ",
     appBugReport: "バグ報告や機能要望も歓迎します 🐛",
     appLanguage: "表示言語",
+    appLanguageJa: "日本語",
+    appLanguageEn: "English",
 
     descriptionLine1:
       "このツールは、欲しい基質を選択すると、一緒に狙える基質を超域活性点ごとに全パターン表示します。",
@@ -75,6 +78,19 @@ export const MESSAGES = {
     modeAdditionalLocked: "付加固定",
     modeSkillLocked: "スキル固定",
 
+    outputWantedHeader: "欲しいドロップ（確定入力）:",
+    outputBaseLabel: "基礎",
+    outputAdditionalLabel: "付加",
+    outputSkillLabel: "スキル",
+    outputNone: "なし",
+    outputBaseChoicesTitle: "基礎（3種選択）候補:",
+    outputLockedAdditional: "付加（固定）: {effect}",
+    outputLockedSkill: "スキル（固定）: {effect}",
+    outputRandomSkill:
+      "スキル（ランダム）: エリアプールから（欲しい: {effect}）",
+    outputRandomAdditional:
+      "付加（ランダム）: エリアプールから（欲しい: {effect}）",
+
     errorUnexpected: "エラーが発生しました: {error}",
     errorInvalidInputCount:
       "入力が不正です（基礎/付加/スキルを各1つずつ、合計3つ入力してください）",
@@ -89,11 +105,14 @@ export const MESSAGES = {
     appSharePrompt: "If this helped, sharing it would really support me 😊",
     appShareX: "Share on X",
     appShareBluesky: "Share on Bluesky",
+    appShareHashtag: "Endfield",
     appCopyLink: "Copy link",
     appCopyDone: "Copied!",
     appGithubRepo: "GitHub Repository",
     appBugReport: "Bug reports and feature requests are welcome 🐛",
     appLanguage: "Language",
+    appLanguageJa: "Japanese",
+    appLanguageEn: "English",
 
     descriptionLine1:
       "Select the substrate effects you want, and this tool shows all possible co-farm patterns by overclock zone.",
@@ -147,6 +166,18 @@ export const MESSAGES = {
 
     modeAdditionalLocked: "Additional Locked",
     modeSkillLocked: "Skill Locked",
+
+    outputWantedHeader: "Desired drop (fixed input):",
+    outputBaseLabel: "Base",
+    outputAdditionalLabel: "Additional",
+    outputSkillLabel: "Skill",
+    outputNone: "None",
+    outputBaseChoicesTitle: "Base choices (pick 3):",
+    outputLockedAdditional: "Additional (locked): {effect}",
+    outputLockedSkill: "Skill (locked): {effect}",
+    outputRandomSkill: "Skill (random): from area pool (wanted: {effect})",
+    outputRandomAdditional:
+      "Additional (random): from area pool (wanted: {effect})",
 
     errorUnexpected: "An error occurred: {error}",
     errorInvalidInputCount:

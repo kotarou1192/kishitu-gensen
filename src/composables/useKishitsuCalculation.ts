@@ -118,7 +118,7 @@ export function useKishitsuCalculation() {
     ];
 
     try {
-      const output = run(input);
+      const output = run(input, locale.value);
       if (output.error) {
         const errorCode = output.errorCode;
         if (errorCode === "invalid_input_count") {

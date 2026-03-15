@@ -5,6 +5,12 @@ import {
   type DropEffectsI18n,
 } from "./constants/dropEffects";
 import { WEAPONS } from "./constants/weapons";
+import {
+  localizeAreaName,
+  localizeEffectName,
+  translate,
+  type Locale,
+} from "./i18n";
 import { uniq, combinations, normalizeEffect } from "./utils";
 
 type AreaEffectPools = {
@@ -49,12 +55,12 @@ const toJaPools = (areaEffects: DropEffectI18n): AreaEffectPools => {
 const parseWantedTriple = (
   input: string[],
   dropEffects: DropEffectsI18n,
+  locale: Locale,
 ): ParseResult => {
   const rows = input;
   if (!Array.isArray(rows) || rows.length !== 3) {
     return {
-      error:
-        "入力が不正です（基礎/付加/スキルを各1つずつ、合計3つ入力してください）",
+      error: translate(locale, "errorInvalidInputCount"),
       errorCode: "invalid_input_count",
     };
   }
@@ -73,14 +79,14 @@ const parseWantedTriple = (
     ) as ["基礎" | "付加" | "スキル", string];
     if (!group || !raw) {
       return {
-        error: `入力が不正です: ${item}`,
+        error: translate(locale, "errorInvalidItem", { item }),
         errorCode: "invalid_item",
         errorItem: item,
       };
     }
     if (!["基礎", "付加", "スキル"].includes(group)) {
       return {
-        error: `入力が不正です（基礎/付加/スキルのみ）: ${item}`,
+        error: translate(locale, "errorInvalidGroup", { item }),
         errorCode: "invalid_group",
         errorItem: item,
       };
@@ -96,7 +102,7 @@ const parseWantedTriple = (
 
   if (seen["基礎"] !== 1 || seen["付加"] !== 1 || seen["スキル"] !== 1) {
     return {
-      error: "入力が不正です（基礎/付加/スキルが各1つずつ必要です）",
+      error: translate(locale, "errorInvalidGroupCount"),
       errorCode: "invalid_group_count",
     };
   }
@@ -199,7 +205,11 @@ const weaponsPossibleUnderPattern = (
 // - 同一エリア・同一モードで、武器集合が同じパターンはまとめる
 // - まとめたものは baseChoices を候補として列挙（同一武器集合に対し複数base3があり得るため）
 // ==============================
-const consolidatePatterns = (areaPools: AreaEffectPools, patterns: any) => {
+const consolidatePatterns = (
+  areaPools: AreaEffectPools,
+  patterns: any,
+  locale: Locale,
+) => {
   // key = mode + weaponNames signature
   const map = new Map();
 
@@ -267,7 +277,13 @@ const consolidatePatterns = (areaPools: AreaEffectPools, patterns: any) => {
     // レア別に整列
     g.byRarity = { 6: [], 5: [], 4: [], other: [] };
     for (const w of g.weapons) {
-      const line = `${w.name}（${w.base}, ${w.additional}, ${w.skill}）`;
+      const base = localizeEffectName(w.base, locale);
+      const additional = localizeEffectName(w.additional, locale);
+      const skill = localizeEffectName(w.skill, locale);
+      const line =
+        locale === "ja"
+          ? `${w.name}（${base}, ${additional}, ${skill}）`
+          : `${w.name} (${base}, ${additional}, ${skill})`;
       if (w.rarity === 6) g.byRarity[6].push(line);
       else if (w.rarity === 5) g.byRarity[5].push(line);
       else if (w.rarity === 4) g.byRarity[4].push(line);
@@ -281,33 +297,56 @@ const consolidatePatterns = (areaPools: AreaEffectPools, patterns: any) => {
 // ==============================
 // 表示用
 // ==============================
-const formatArea = (areaName: string, wanted: any, groups: any) => {
+const formatArea = (
+  areaName: string,
+  wanted: any,
+  groups: any,
+  locale: Locale,
+) => {
   const lines = [];
-  lines.push(`■${areaName}`);
+  lines.push(`■${localizeAreaName(areaName, locale)}`);
 
   if (!groups || groups.length === 0) {
-    lines.push("なし");
+    lines.push(translate(locale, "outputNone"));
     return lines.join("\n");
   }
 
   for (const g of groups) {
-    lines.push(`【${g.mode}】`);
+    const modeLabel =
+      g.mode === "付加固定"
+        ? translate(locale, "modeAdditionalLocked")
+        : translate(locale, "modeSkillLocked");
+    lines.push(`【${modeLabel}】`);
 
     // baseの選択肢（3つ固定を候補として複数列挙）
-    lines.push(`基礎（3種選択）候補:`);
+    lines.push(translate(locale, "outputBaseChoicesTitle"));
     for (const b3 of g.baseChoicesList) {
-      lines.push(`  - ${b3.join(", ")}`);
+      lines.push(
+        `  - ${b3.map((effect: string) => localizeEffectName(effect, locale)).join(", ")}`,
+      );
     }
 
     if (g.mode === "付加固定") {
-      lines.push(`付加（固定）: ${g.lockedAdditional}`);
       lines.push(
-        `スキル（ランダム）: エリアプールから（欲しい: ${wanted.skill}）`,
+        translate(locale, "outputLockedAdditional", {
+          effect: localizeEffectName(g.lockedAdditional, locale),
+        }),
+      );
+      lines.push(
+        translate(locale, "outputRandomSkill", {
+          effect: localizeEffectName(wanted.skill, locale),
+        }),
       );
     } else {
-      lines.push(`スキル（固定）: ${g.lockedSkill}`);
       lines.push(
-        `付加（ランダム）: エリアプールから（欲しい: ${wanted.additional}）`,
+        translate(locale, "outputLockedSkill", {
+          effect: localizeEffectName(g.lockedSkill, locale),
+        }),
+      );
+      lines.push(
+        translate(locale, "outputRandomAdditional", {
+          effect: localizeEffectName(wanted.additional, locale),
+        }),
       );
     }
 
@@ -331,8 +370,8 @@ const formatArea = (areaName: string, wanted: any, groups: any) => {
 // ==============================
 // run（エントリポイント）
 // ==============================
-const run = (input: string[]) => {
-  const parsed = parseWantedTriple(input, DROP_EFFECTS);
+const run = (input: string[], locale: Locale = "ja") => {
+  const parsed = parseWantedTriple(input, DROP_EFFECTS, locale);
   if ("error" in parsed) {
     return {
       error: parsed.error,
@@ -345,21 +384,27 @@ const run = (input: string[]) => {
 
   const results = [];
   const textLines = [];
-  textLines.push(`欲しいドロップ（確定入力）:`);
-  textLines.push(`  基礎: ${wanted?.base}`);
-  textLines.push(`  付加: ${wanted?.additional}`);
-  textLines.push(`  スキル: ${wanted?.skill}`);
+  textLines.push(translate(locale, "outputWantedHeader"));
+  textLines.push(
+    `  ${translate(locale, "outputBaseLabel")}: ${wanted?.base ? localizeEffectName(wanted.base, locale) : translate(locale, "outputNone")}`,
+  );
+  textLines.push(
+    `  ${translate(locale, "outputAdditionalLabel")}: ${wanted?.additional ? localizeEffectName(wanted.additional, locale) : translate(locale, "outputNone")}`,
+  );
+  textLines.push(
+    `  ${translate(locale, "outputSkillLabel")}: ${wanted?.skill ? localizeEffectName(wanted.skill, locale) : translate(locale, "outputNone")}`,
+  );
   textLines.push("");
 
   for (const areaKey of Object.keys(DROP_EFFECTS) as AreaKey[]) {
     const table = DROP_EFFECTS[areaKey];
     const areaPools = toJaPools(table.effects);
     const patterns = enumerateValidLockPatternsForArea(areaPools, wanted);
-    const groups = consolidatePatterns(areaPools, patterns);
+    const groups = consolidatePatterns(areaPools, patterns, locale);
     const areaName = table.area.ja;
 
     results.push({ areaName, groups });
-    textLines.push(formatArea(areaName, wanted, groups));
+    textLines.push(formatArea(areaName, wanted, groups, locale));
   }
 
   return {
