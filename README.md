@@ -84,6 +84,60 @@ npm run preview
 
 # OGP画像を生成
 npm run ogp:generate
+
+# 武器を追加/更新（WEAPONS + i18n を同時更新）
+npm run weapons:add -- \
+   --ja "テルミット・カッター" \
+   --en "Thermite Cutter" \
+   --rarity 6 \
+   --category "片手剣" \
+   --base "意志UP" \
+   --additional "攻撃力UP" \
+   --skill "流回"
+
+# 武器データとi18nの整合性チェック
+npm run weapons:check
+```
+
+`npm run weapons:add` は次の2ファイルを自動で更新します。
+
+- `src/lib/constants/weapons.ts` の `WEAPONS`
+- `src/lib/i18n/index.ts` の `weaponI18nMap`
+
+挙動は以下です。
+
+- JA名が未登録: 新規追加
+- JA名が既存: 同名エントリを更新
+
+必要に応じて以下も利用できます。
+
+```bash
+# 変更内容だけ確認（ファイルは更新しない）
+node scripts/add-weapon-i18n.js \
+   --ja "テルミット・カッター" \
+   --en "Thermite Cutter" \
+   --rarity 6 \
+   --category "片手剣" \
+   --base "意志UP" \
+   --additional "攻撃力UP" \
+   --skill "流回" \
+   --dry-run
+```
+
+`npm run weapons:check` は新しい武器を追加したときに、以下を検証します。
+
+- `src/lib/constants/weapons.ts` にある武器名と `src/lib/i18n/index.ts` の `weaponI18nMap` の同期
+- JAキー重複、EN名重複（デフォルトでエラー）
+- マッピング漏れがある場合は貼り付け用のテンプレート行を出力
+
+必要に応じて以下も利用できます。
+
+```bash
+# EN重複を警告扱いにする
+node scripts/check-weapons-maintenance.js --allow-duplicate-en
+
+# CI連携向けにJSONで結果を出力
+node scripts/check-weapons-maintenance.js --json
 ```
 
 #### Docker Compose を使う方法

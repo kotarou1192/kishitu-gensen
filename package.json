@@ -9,7 +9,10 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "ogp:generate": "node scripts/generate-ogp.js"
+    "ogp:generate": "node scripts/generate-ogp.js",
+    "weapons:check": "node scripts/check-weapons-maintenance.js",
+    "weapons:add": "node scripts/add-weapon-i18n.js",
+    "weapons:add-i18n": "node scripts/add-weapon-i18n.js"
   },
   "dependencies": {
     "vue": "^3.4.21"
