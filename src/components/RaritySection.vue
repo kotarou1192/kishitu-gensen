@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWeaponCollection } from "../composables/useWeaponCollection";
-import { localizeEffectName } from "../lib/i18n";
+import { localizeEffectName, localizeWeaponName } from "../lib/i18n";
 import { useI18n } from "../composables/useI18n";
 
 interface Props {
@@ -28,13 +28,13 @@ const rarityClass = (rarity: number | "other") => {
 // 武器名をパースして名前と効果に分ける
 const parseWeaponName = (weaponText: string) => {
   // 形式: 武器名（基礎効果, 付加効果, スキル効果）
-  const match = weaponText.match(/^(.+?)（(.+?), (.+?), (.+?)）$/);
+  const match = weaponText.match(/^(.+?)[（(](.+?), (.+?), (.+?)[）)]$/);
   if (match) {
     return {
-      name: match[1],
-      base: match[2],
-      additional: match[3],
-      skill: match[4],
+      name: match[1].trim(),
+      base: match[2].trim(),
+      additional: match[3].trim(),
+      skill: match[4].trim(),
     };
   }
   // パースできない場合は元のテキストをそのまま返す
@@ -57,7 +57,9 @@ const parseWeaponName = (weaponText: string) => {
             :class="{ collected: isCollected(parseWeaponName(weapon).name) }"
           >
             <template v-if="parseWeaponName(weapon).base !== null">
-              {{ parseWeaponName(weapon).name }}（<span class="effect-base">{{
+              {{ localizeWeaponName(parseWeaponName(weapon).name, locale)
+              }}{{ locale === "ja" ? "（" : "("
+              }}<span class="effect-base">{{
                 localizeEffectName(String(parseWeaponName(weapon).base), locale)
               }}</span
               >,
@@ -74,7 +76,7 @@ const parseWeaponName = (weaponText: string) => {
                   locale,
                 )
               }}</span
-              >）
+              >{{ locale === "ja" ? "）" : ")" }}
             </template>
             <template v-else>
               {{ weapon }}

@@ -212,6 +212,77 @@ export const translate = (
 
 const effectI18nMap = new Map<string, { ja: string; en: string }>();
 const areaI18nMap = new Map<string, { ja: string; en: string }>();
+const weaponI18nMap = new Map<string, { ja: string; en: string }>([
+  ["遺忘", { ja: "遺忘", en: "Oblivion" }],
+  ["騎士精神", { ja: "騎士精神", en: "Chivalric Virtues" }],
+  ["作品：蝕跡", { ja: "作品：蝕跡", en: "Work: Corroded Trace" }],
+  ["使命必達", { ja: "使命必達", en: "Mission Accomplished" }],
+  ["蒼星の囁き", { ja: "蒼星の囁き", en: "Whisper of Azure Star" }],
+  ["破壊ユニット", { ja: "破壊ユニット", en: "Detonation Unit" }],
+  ["ナビゲーター", { ja: "ナビゲーター", en: "Navigator" }],
+  ["芸術の独裁者", { ja: "芸術の独裁者", en: "Dictator of Art" }],
+  ["同類共食", { ja: "同類共食", en: "Clannibal" }],
+  ["楔", { ja: "楔", en: "Wedge" }],
+  ["クラヴェンガー", { ja: "クラヴェンガー", en: "Clavenger" }],
+  ["鑑", { ja: "鑑", en: "Mirror" }],
+  ["昔日の逸品", { ja: "昔日の逸品", en: "Relic of Yesteryear" }],
+  ["大雷斑", { ja: "大雷斑", en: "Thunderberge" }],
+  ["破砕君主", { ja: "破砕君主", en: "Shatterlord" }],
+  ["J.E.T.", { ja: "J.E.T.", en: "JET" }],
+  ["負山", { ja: "負山", en: "Mountain Bearer" }],
+  ["勇猛", { ja: "勇猛", en: "Valiant" }],
+  ["ダークトーチ", { ja: "ダークトーチ", en: "Umbral Torch" }],
+  [
+    "テルミット・カッター",
+    { ja: "テルミット・カッター", en: "Thermite Cutter" },
+  ],
+  ["フーヤオ", { ja: "フーヤオ", en: "Fuyao" }],
+  ["フレイムフォージ", { ja: "フレイムフォージ", en: "Flameforge" }],
+  ["輝かしき名声", { ja: "輝かしき名声", en: "Resplendent Fame" }],
+  ["大願", { ja: "大願", en: "Great Vow" }],
+  ["白夜新星", { ja: "白夜新星", en: "White-Night Nova" }],
+  ["不知帰", { ja: "不知帰", en: "No Return" }],
+  ["栄光の記憶", { ja: "栄光の記憶", en: "Memory of Glory" }],
+  ["望郷", { ja: "望郷", en: "Nostalgia" }],
+  ["落草", { ja: "落草", en: "Outlaw" }],
+  ["O.B.J.術識", { ja: "O.B.J.術識", en: "O.B.J. Arcanum" }],
+  ["荒野迷走", { ja: "荒野迷走", en: "Wasteland Drift" }],
+  ["術無", { ja: "術無", en: "Artless" }],
+  ["弔いの詩", { ja: "弔いの詩", en: "Elegy" }],
+  ["布教の自由", { ja: "布教の自由", en: "Freedom to Preach" }],
+  ["O.B.J.迅速", { ja: "O.B.J.迅速", en: "O.B.J. Swift" }],
+  ["合理的決別", { ja: "合理的決別", en: "Rational Farewell" }],
+  ["作品：衆生", { ja: "作品：衆生", en: "Work: All Beings" }],
+  ["O.B.J.重責", { ja: "O.B.J.重責", en: "O.B.J. Burden" }],
+  ["最期の声", { ja: "最期の声", en: "Last Voice" }],
+  ["千古恒常", { ja: "千古恒常", en: "Eternal Through Ages" }],
+  ["探龍", { ja: "探龍", en: "Dragonseeker" }],
+  ["O.B.J.鋭矛", { ja: "O.B.J.鋭矛", en: "O.B.J. Keen Spear" }],
+  ["求心の槍", { ja: "求心の槍", en: "Spear of Cohesion" }],
+  ["正義嵌合", { ja: "正義嵌合", en: "Justice Interlock" }],
+  ["O.B.J.軽刃", { ja: "O.B.J.軽刃", en: "O.B.J. Light Blade" }],
+  ["フィンチェイサー3.0", { ja: "フィンチェイサー3.0", en: "Fin Chaser 3.0" }],
+  ["仰止", { ja: "仰止", en: "Reverence" }],
+  ["堅城鋳造者", { ja: "堅城鋳造者", en: "Bastion Forger" }],
+  ["鋼鉄余音", { ja: "鋼鉄余音", en: "Steel Resonance" }],
+  ["十二問", { ja: "十二問", en: "Twelve Questions" }],
+  [
+    "オート・ハイパーノヴァ",
+    { ja: "オート・ハイパーノヴァ", en: "Hypernova Auto" },
+  ],
+  ["蛍光雷羽", { ja: "蛍光雷羽", en: "Luminous Thunderfeather" }],
+  ["ロアーガード", { ja: "ロアーガード", en: "Howling Guard" }],
+  ["長路", { ja: "長路", en: "Long Road" }],
+  ["工業零点一", { ja: "工業零点一", en: "Industry 0.1" }],
+  ["鍛冶師", { ja: "鍛冶師", en: "Smith" }],
+  [
+    "アンゲロス・スレイヤー",
+    { ja: "アンゲロス・スレイヤー", en: "Aggeloslayer" },
+  ],
+  ["開拓者の道標", { ja: "開拓者の道標", en: "Pathfinder's Beacon" }],
+  ["緊急設計", { ja: "緊急設計", en: "Emergency Design" }],
+  ["潮流", { ja: "潮流", en: "Tideflow" }],
+]);
 
 for (const area of Object.values(DROP_EFFECTS)) {
   areaI18nMap.set(area.area.ja, area.area);
@@ -238,6 +309,14 @@ export const localizeEffectName = (
 export const localizeAreaName = (areaJa: string, locale: Locale): string => {
   const value = areaI18nMap.get(areaJa);
   return value ? value[locale] : areaJa;
+};
+
+export const localizeWeaponName = (
+  weaponJa: string,
+  locale: Locale,
+): string => {
+  const value = weaponI18nMap.get(weaponJa);
+  return value ? value[locale] : weaponJa;
 };
 
 export const BASE_EFFECT_PARAM_ORDER: readonly BaseEffect[] = [
