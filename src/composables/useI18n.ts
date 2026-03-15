@@ -4,20 +4,41 @@ import { LOCALE_STORAGE_KEY, MESSAGES, translate, type Locale, type MessageKey }
 const locale = ref<Locale>("ja");
 let initialized = false;
 
-const isLocale = (value: string | null): value is Locale => {
+const isLocale = (value: string | null | undefined): value is Locale => {
   return value === "ja" || value === "en";
+};
+
+const ensureTrailingSlash = (path: string) => {
+  return path.endsWith("/") ? path : `${path}/`;
+};
+
+const getLocaleFromPathname = (pathname: string): Locale | null => {
+  const base = ensureTrailingSlash(import.meta.env.BASE_URL || "/");
+  const normalizedPath = ensureTrailingSlash(pathname);
+
+  const relativePath =
+    base !== "/" && normalizedPath.startsWith(base)
+      ? normalizedPath.slice(base.length)
+      : normalizedPath.replace(/^\/+/, "");
+
+  const [firstSegment] = relativePath.split("/").filter(Boolean);
+  return isLocale(firstSegment) ? firstSegment : null;
+};
+
+const getLocalePath = (next: Locale) => {
+  const base = ensureTrailingSlash(import.meta.env.BASE_URL || "/");
+  return `${base}${next}/`;
 };
 
 const initLocale = () => {
   if (typeof window === "undefined") return;
 
-  const params = new URLSearchParams(window.location.search);
-  const urlLang = params.get("lang");
+  const pathLocale = getLocaleFromPathname(window.location.pathname);
   const storedLang = localStorage.getItem(LOCALE_STORAGE_KEY);
 
-  if (isLocale(urlLang)) {
-    locale.value = urlLang;
-    localStorage.setItem(LOCALE_STORAGE_KEY, urlLang);
+  if (pathLocale) {
+    locale.value = pathLocale;
+    localStorage.setItem(LOCALE_STORAGE_KEY, pathLocale);
     return;
   }
 
@@ -46,11 +67,16 @@ export function useI18n() {
     locale.value = next;
 
     if (typeof window === "undefined") return;
-    const params = new URLSearchParams(window.location.search);
-    params.set("lang", next);
+    const nextPath = getLocalePath(next);
+    const currentPath = ensureTrailingSlash(window.location.pathname);
+    if (currentPath === ensureTrailingSlash(nextPath)) {
+      return;
+    }
+
+    const query = window.location.search;
     const hash = window.location.hash;
-    const nextUrl = `${window.location.pathname}?${params.toString()}${hash}`;
-    window.history.replaceState({}, "", nextUrl);
+    const nextUrl = `${nextPath}${query}${hash}`;
+    window.location.assign(nextUrl);
   };
 
   const t = (key: MessageKey, params?: Record<string, string | number>) => {

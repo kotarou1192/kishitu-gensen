@@ -83,7 +83,6 @@ export function useKishitsuCalculation() {
     if (baseParam) params.set("b", baseParam);
     if (additionalParam) params.set("a", additionalParam);
     if (skillParam) params.set("s", skillParam);
-    params.set("lang", locale.value);
 
     // ハッシュを保持する
     const hash = window.location.hash;
