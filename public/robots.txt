@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kotarou1192.github.io/kishitu-gensen/sitemap.xml
