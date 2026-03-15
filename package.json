@@ -9,21 +9,40 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "ogp:generate": "node scripts/generate-ogp.js",
     "weapons:check": "node scripts/check-weapons-maintenance.js",
     "weapons:add": "node scripts/add-weapon-i18n.js",
     "weapons:add-i18n": "node scripts/add-weapon-i18n.js"
   },
   "dependencies": {
+    "@eslint/js": "^9.39.1",
     "vue": "^3.4.21"
   },
   "devDependencies": {
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.5.1",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2",
+    "@eslint/js": "^10.0.1",
+    "typescript-eslint": "^8.46.4",
     "@vitejs/plugin-vue": "^6.0.4",
+    "vue-eslint-parser": "^10.2.0",
     "@vitest/ui": "^4.0.18",
     "canvas": "^3.2.1",
+    "eslint": "^10.0.3",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.8.0",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1",
     "typescript": "^5.4.2",
+    "typescript-eslint": "^8.57.0",
     "vite": "^7.3.1",
     "vitest": "^4.0.18",
+    "vue-eslint-parser": "^10.4.0",
     "vue-tsc": "^3.2.4"
   }
 }
