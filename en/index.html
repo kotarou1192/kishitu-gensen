@@ -1,18 +1,18 @@
 <!doctype html>
-<html lang="ja">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="https://github.com/kotarou1192.png" />
     <link rel="apple-touch-icon" href="https://github.com/kotarou1192.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>基質厳選ツール - アークナイツ：エンドフィールド</title>
+    <title>Substrate Farming Tool - Arknights: Endfield</title>
     <meta
       name="description"
-      content="アークナイツ：エンドフィールドの基質（武器）厳選を補助するツール。欲しい基質を選択すると、一緒に狙える基質を超域活性点ごとに全パターン表示します。"
+      content="Arknights: Endfield substrate (weapon) farming helper. Select your desired effects and find all viable farming patterns by overclock zone."
     />
     <meta
       name="keywords"
-      content="アークナイツ,エンドフィールド,基質,武器,厳選,Arknights,Endfield,substrate,weapon,farming"
+      content="Arknights,Endfield,substrate,weapon,farming,build planner,drop optimizer"
     />
     <meta
       name="robots"
@@ -24,7 +24,7 @@
     />
     <meta name="theme-color" content="#0f3460" />
 
-    <link rel="canonical" href="https://kotarou1192.github.io/kishitu-gensen/" />
+    <link rel="canonical" href="https://kotarou1192.github.io/kishitu-gensen/en/" />
     <link rel="alternate" hreflang="ja" href="https://kotarou1192.github.io/kishitu-gensen/" />
     <link rel="alternate" hreflang="en" href="https://kotarou1192.github.io/kishitu-gensen/en/" />
     <link
@@ -38,53 +38,51 @@
       href="https://kotarou1192.github.io/kishitu-gensen/sitemap.xml"
     />
 
-    <!-- OGP Meta Tags -->
-    <meta property="og:title" content="基質厳選ツール - アークナイツ：エンドフィールド" />
+    <meta property="og:title" content="Substrate Farming Tool - Arknights: Endfield" />
     <meta
       property="og:description"
-      content="欲しい基質を選択すると、一緒に狙える基質を超域活性点ごとに全パターン表示します。"
+      content="Select your desired substrate effects and discover all viable farming patterns by overclock zone."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://kotarou1192.github.io/kishitu-gensen/" />
+    <meta property="og:url" content="https://kotarou1192.github.io/kishitu-gensen/en/" />
     <meta property="og:image" content="https://kotarou1192.github.io/kishitu-gensen/ogp.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="基質厳選ツール - アークナイツ：エンドフィールド" />
-    <meta property="og:site_name" content="基質厳選ツール" />
-    <meta property="og:locale" content="ja_JP" />
-    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:image:alt" content="Substrate Farming Tool - Arknights: Endfield" />
+    <meta property="og:site_name" content="Substrate Farming Tool" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ja_JP" />
 
-    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="基質厳選ツール - アークナイツ：エンドフィールド" />
+    <meta name="twitter:title" content="Substrate Farming Tool - Arknights: Endfield" />
     <meta
       name="twitter:description"
-      content="欲しい基質を選択すると、一緒に狙える基質を超域活性点ごとに全パターン表示します。"
+      content="Select your desired substrate effects and discover all viable farming patterns by overclock zone."
     />
     <meta name="twitter:image" content="https://kotarou1192.github.io/kishitu-gensen/ogp.png" />
-    <meta name="twitter:image:alt" content="基質厳選ツール - アークナイツ：エンドフィールド" />
+    <meta name="twitter:image:alt" content="Substrate Farming Tool - Arknights: Endfield" />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "基質厳選ツール",
-        "alternateName": "Substrate Farming Tool",
+        "name": "Substrate Farming Tool",
+        "alternateName": "基質厳選ツール",
         "url": "https://kotarou1192.github.io/kishitu-gensen/",
-        "inLanguage": ["ja", "en"]
+        "inLanguage": ["en", "ja"]
       }
     </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "基質厳選ツール",
-        "alternateName": "Substrate Farming Tool",
-        "description": "アークナイツ：エンドフィールドの基質（武器）厳選を補助するツール。欲しい基質を選択すると、一緒に狙える基質を超域活性点ごとに全パターン表示します。",
-        "url": "https://kotarou1192.github.io/kishitu-gensen/",
+        "name": "Substrate Farming Tool",
+        "alternateName": "基質厳選ツール",
+        "description": "Arknights: Endfield substrate (weapon) farming helper. Select your desired effects and find all viable farming patterns by overclock zone.",
+        "url": "https://kotarou1192.github.io/kishitu-gensen/en/",
         "applicationCategory": "GameApplication",
         "operatingSystem": "Web",
-        "inLanguage": ["ja", "en"],
+        "inLanguage": ["en", "ja"],
         "image": "https://kotarou1192.github.io/kishitu-gensen/ogp.png",
         "author": {
           "@type": "Person",
@@ -94,13 +92,23 @@
       }
     </script>
 
-    <!-- Cloudflare Web Analytics -->
+    <script>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("lang") !== "en") {
+          params.set("lang", "en");
+          const query = params.toString();
+          const nextUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+          window.history.replaceState({}, "", nextUrl);
+        }
+      })();
+    </script>
+
     <script
       defer
       src="https://static.cloudflareinsights.com/beacon.min.js"
       data-cf-beacon='{"token": "4bf3645aa5134867992c09b75f1052fd"}'
     ></script>
-    <!-- End Cloudflare Web Analytics -->
   </head>
   <body>
     <div id="app"></div>

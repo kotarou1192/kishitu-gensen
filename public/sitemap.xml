@@ -6,12 +6,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://kotarou1192.github.io/kishitu-gensen/?lang=ja</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://kotarou1192.github.io/kishitu-gensen/?lang=en</loc>
+    <loc>https://kotarou1192.github.io/kishitu-gensen/en/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
