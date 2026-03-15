@@ -92,8 +92,8 @@ export const MESSAGES = {
     errorInvalidGroupCount: "入力が不正です（基礎/付加/スキルが各1つずつ必要です）",
   },
   en: {
-    appTitle: "🎮 Substrate Farming Tool",
-    appSubtitle: "Arknights: Endfield - Substrate (Weapon) Farming Assistant",
+    appTitle: "🎮 Weapon Essence Solver",
+    appSubtitle: "Arknights: Endfield - Weapon Essence Solver",
     appSharePrompt: "If this helped, sharing it would really support me 😊",
     appShareX: "Share on X",
     appShareBluesky: "Share on Bluesky",
@@ -107,21 +107,21 @@ export const MESSAGES = {
     appLanguageEn: "English",
 
     descriptionLine1:
-      "Select the substrate effects you want, and this tool shows all possible co-farm patterns by overclock zone.",
+      "Select the weapon essence effects you want, and this solver shows all possible combination patterns by overclock zone.",
     descriptionLine2: "Weapon and overclock zone data are as of 2026-02-17.",
 
-    inputTitle: "Select desired substrate effects",
+    inputTitle: "Select desired weapon essence effects",
     inputBaseLabel: "Base Effect:",
     inputAdditionalLabel: "Additional Effect:",
     inputSkillLabel: "Skill Effect:",
-    inputCalculate: "Calculate farming patterns",
+    inputCalculate: "Solve combinations",
 
-    resultsSelectedTitle: "Selected substrate effects",
+    resultsSelectedTitle: "Selected weapon essence effects",
     resultsBaseLabel: "Base Effect:",
     resultsAdditionalLabel: "Additional Effect:",
     resultsSkillLabel: "Skill Effect:",
 
-    areaNoResult: "None (your target substrate cannot be obtained in this area)",
+    areaNoResult: "None (your target weapon essence cannot be obtained in this area)",
 
     patternTitle: "Pattern {number}",
     patternWeaponsNone: "No weapons",
